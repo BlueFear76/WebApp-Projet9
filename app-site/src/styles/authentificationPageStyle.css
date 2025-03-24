@@ -1,0 +1,22 @@
+.loginPage{
+    color: rgb(20, 79, 35);
+    font-family :'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin: 80px;
+    text-align: center;
+}
+
+.fields{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    margin: 100px;
+}
+
+.button{
+    background-color: rgb(148, 207, 130);
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+}
