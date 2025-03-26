@@ -8,6 +8,7 @@ import {
 import { EmployeesService } from './employees.service';
 import { LoginDto } from './dto/login.dto';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
+import { EmployeeLoginDto } from './dto/login-employee.dto';
 
 @Controller('employees')
 export class EmployeesController {
@@ -43,8 +44,8 @@ export class EmployeesController {
 
   // POST /employees/login - Login (authenticate existing employee)
   @Post('login')
-  async login(@Body() loginDto: LoginDto) {
-    const { username, password } = loginDto;
+  async login(@Body() employeeLoginDto: EmployeeLoginDto) {
+    const { username, password } = employeeLoginDto;
 
     // Validate employee credentials
     const employee = await this.employeesService.validateEmployee(
