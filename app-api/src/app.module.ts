@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EmployeesModule } from './modules/employees/employees.module';
+import { Employee } from './modules/employees/employees.entity';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { EmployeesModule } from './modules/employees/employees.module';
       username: 'root', // Ton nom d'utilisateur MySQL
       password: 'wonder1000', // Ton mot de passe MySQL
       database: 'db', // Nom de la base de données
-      entities: [],
+      entities: [Employee],
       synchronize: true, // À ne pas activer en production (évite de perdre des données)
     }),
     EmployeesModule,
