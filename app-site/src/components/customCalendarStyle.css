@@ -1,0 +1,19 @@
+.fc-daygrid-body tr {
+    background-color: #c883ee;
+    border: 2px solid black;
+  }
+  
+  /* Cibler les événements et les ajuster aussi si nécessaire */
+  .fc-event {
+    min-height: 40px;  /* Modifie la hauteur minimale des événements */
+  }
+
+  .fc-daygrid-event {
+    background-color: #86c2e0;
+  }
+
+
+  .fc-daygrid-day {
+    background-color: #b9f1d1;
+    border: 2px solid black;
+  }

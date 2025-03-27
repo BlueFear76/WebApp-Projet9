@@ -4,6 +4,9 @@ import './App.css';
 import Authentification from './pages/authentificationPage';
 import Home from './pages/homePage';
 import Tool from './pages/toolPage';
+import MissionPage from './pages/missonPage';
+import CustomCalendar from './components/customCalendar';
+
 
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -18,9 +21,13 @@ const App: React.FC = () => {
           <Link to="/home">
             <span className="page-text">Home</span>
           </Link>
+          <Link to="/missions">
+            <span className="page-text">Mission</span>
+          </Link>
           <Link to="/" onClick={() => setIsAuthenticated(false)}>
             <span className="page-text">Se Déconnecter</span>
           </Link>
+
         </div>
       )}
 
@@ -37,6 +44,10 @@ const App: React.FC = () => {
           <Route 
             path="/tools" 
             element={isAuthenticated ? <Tool /> : <Navigate to="/" />} 
+          />
+          <Route 
+            path="/missions" 
+            element={isAuthenticated ? <MissionPage /> : <Navigate to="/" />} 
           />
         </Routes>
       </div>
