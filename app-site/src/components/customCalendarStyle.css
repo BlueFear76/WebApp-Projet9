@@ -1,6 +1,5 @@
 .fc-daygrid-body tr {
-    background-color: #c883ee;
-    border: 2px solid black;
+    background-color: #c1e4c8;
   }
   
   /* Cibler les événements et les ajuster aussi si nécessaire */
@@ -14,6 +13,5 @@
 
 
   .fc-daygrid-day {
-    background-color: #b9f1d1;
-    border: 2px solid black;
+    background-color: #ffffff;
   }

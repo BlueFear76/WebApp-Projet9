@@ -5,7 +5,6 @@ import Authentification from './pages/authentificationPage';
 import Home from './pages/homePage';
 import Tool from './pages/toolPage';
 import MissionPage from './pages/missonPage';
-import CustomCalendar from './components/customCalendar';
 
 
 const App: React.FC = () => {
@@ -14,21 +13,15 @@ const App: React.FC = () => {
   return (
     <Router>
       {isAuthenticated && (
-        <div className="nav-links">
-          <Link to="/tools">
-            <span className="page-text">Tools</span>
-          </Link>
-          <Link to="/home">
-            <span className="page-text">Home</span>
-          </Link>
-          <Link to="/missions">
-            <span className="page-text">Mission</span>
-          </Link>
-          <Link to="/" onClick={() => setIsAuthenticated(false)}>
-            <span className="page-text">Se Déconnecter</span>
-          </Link>
-
-        </div>
+        <div className="sidebar">
+              <h2>Navigation</h2>
+              <ul>
+                <li><Link to="/home">Home</Link></li>
+                <li><Link to="/missions">Missions</Link></li>
+                <li><Link to="/tools">Outils</Link></li>
+                <li><Link to="/" onClick={() => setIsAuthenticated(false)}>Déconnexion</Link></li>
+              </ul>
+            </div>
       )}
 
       <div className="main-content">

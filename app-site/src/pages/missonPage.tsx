@@ -117,10 +117,10 @@ export default function MissionPage() {
 
   return (
     <div className="missionPage">
-      <h1>Page des Missions</h1>
+      <h1 className='title'>MISSIONS</h1>
       <div className="view-toggle">
-        <button onClick={() => setMissionView('list')}>Vue Liste</button>
-        <button onClick={() => setMissionView('calendar')}>Vue Calendrier</button>
+        <button className='button' onClick={() => setMissionView('list')}>Vue Liste</button>
+        <button className='button' onClick={() => setMissionView('calendar')}>Vue Calendrier</button>
       </div>
       <div className="missions-content">
         {renderMissions()}

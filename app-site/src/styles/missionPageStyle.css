@@ -2,7 +2,11 @@
     color: rgb(20, 79, 35);
     font-family :'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     margin: 80px;
-    text-align: center;
+    margin-left: 270px;
+}
+
+.title{
+  font-size: 40px;
 }
 
 .missions-table {
@@ -52,3 +56,19 @@
     border-radius: 5px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
+
+
+  .button{
+    background-color: rgb(148, 207, 130);
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+}
+
+.view-toggle{
+  display : flex;
+  gap: 20px;
+  justify-content: center;
+  margin: 30px;
+}
