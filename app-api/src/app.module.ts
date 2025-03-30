@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EmployeesModule } from './modules/employees/employees.module';
 import { Employee } from './modules/employees/employees.entity';
+// import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { Employee } from './modules/employees/employees.entity';
       synchronize: true, // À ne pas activer en production (évite de perdre des données)
     }),
     EmployeesModule,
+    // AuthModule,
   ],
 })
 export class AppModule {}
