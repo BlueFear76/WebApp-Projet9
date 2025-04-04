@@ -59,12 +59,15 @@ export default function MissionPage() {
 
   const convertMissionsToEvents = (missions: Mission[]) => {
     return missions.map(mission => ({
-      title: mission.description,  // Le titre de l'événement est la description de la mission
-      start: moment(mission.start_time).toISOString(),  // Utiliser moment pour convertir la date
-      end: moment(mission.end_time).toISOString(),  // De même pour la fin
-      description: mission.description,
-      location: mission.adress,  // Ajouter l'adresse de la mission
-      duration: mission.duration  // Optionnel : durée de la mission
+      id: mission.id.toString(),  // ID unique de l'événement
+      title: mission.description,  // Le titre de l'événement
+      start: moment(mission.start_time).toISOString(),  // Date de début formatée
+      end: moment(mission.end_time).toISOString(),  // Date de fin formatée
+      extendedProps: {
+        description: mission.description,  // Description de la mission
+        location: mission.adress,  // Adresse de la mission
+        duration: mission.duration  // Durée de la mission
+      },
     }));
   };
 
