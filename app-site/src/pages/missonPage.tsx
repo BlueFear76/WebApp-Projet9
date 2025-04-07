@@ -8,9 +8,16 @@ import CustomCalendar from '../components/customCalendar';
 
 export default function MissionPage() {
   const [missionView, setMissionView] = useState('list'); // 'list' pour liste, 'calendar' pour calendrier
+  const [showForm, setShowForm] = useState(false); // Affichage du formulaire
+  const [newMission, setNewMission] = useState({
+    description: '',
+    start_time: '',
+    end_time: '',
+    adress: '',
+  });
 
   // Données fictives des missions (à remplacer par les données réelles)
-  const fakeMissions: Mission[] = [
+  const [fakeMissions, setfakeMissions] = useState<Mission[]>([
     {
       id: 1,
       description: "Entretien du parc municipal de Versailles",
@@ -55,7 +62,7 @@ export default function MissionPage() {
       employees: [{ id: 3, permission: "CHEF_EQUIPE", first_name: "Paul", last_name: "Lemoine", phone_number: "0698765432", login: "plemoine" }],
       travel: { id: 11, missions: [] }
     }
-  ];
+  ]);
 
   const convertMissionsToEvents = (missions: Mission[]) => {
     return missions.map(mission => ({
@@ -118,8 +125,64 @@ export default function MissionPage() {
     }
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setNewMission({ ...newMission, [name]: value });
+  };
+
+  const onSave = (e: React.FormEvent) => {
+    e.preventDefault();
+  
+    const durationHours = Math.abs(
+      new Date(newMission.end_time).getTime() - new Date(newMission.start_time).getTime()
+    ) / (1000 * 60 * 60);
+  
+    const newMissionObject: Mission = {
+      id: fakeMissions.length + 1, // Id fictif auto-incrémenté
+      description: newMission.description,
+      start_time: newMission.start_time,
+      end_time: newMission.end_time,
+      duration: durationHours,
+      adress: newMission.adress,
+      longitude: 0,
+      latitude: 0,
+      tools: [],
+      cars: [],
+      employees: [],
+      travel: { id: 0, missions: [] }
+    };
+  
+    setfakeMissions([...fakeMissions, newMissionObject]);
+    setNewMission({ description: '', start_time: '', end_time: '', adress: '' });
+    setShowForm(false); // cacher le formulaire après enregistrement
+  };
+
   return (
     <div className="missionPage">
+      <button className='add-button' onClick={() => setShowForm(!showForm)}>
+        Nouvelle Mission
+      </button>
+      {showForm && (
+      <form className="mission-form" onSubmit={onSave}>
+      <h2>Créer une nouvelle mission</h2>
+      <label>Description :
+        <input type="text" name="description" value={newMission.description} onChange={handleInputChange} />
+      </label>
+      <label>Date de début :
+        <input type="datetime-local" name="start_time" value={newMission.start_time} onChange={handleInputChange} />
+      </label>
+      <label>Date de fin :
+        <input type="datetime-local" name="end_time" value={newMission.end_time} onChange={handleInputChange} />
+      </label>
+      <label>Adresse :
+        <input type="text" name="adress" value={newMission.adress} onChange={handleInputChange} />
+      </label>
+      <div className="form-actions">
+        <button type="submit">Enregistrer</button>
+        <button type="button" onClick={() => setShowForm(false)}>Annuler</button>
+      </div>
+    </form>
+    )}
       <h1 className='title'>MISSIONS</h1>
       <div className="view-toggle">
         <button className='button' onClick={() => setMissionView('list')}>Vue Liste</button>

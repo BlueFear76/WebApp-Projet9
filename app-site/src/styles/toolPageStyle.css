@@ -3,6 +3,7 @@
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     margin: 80px;
     margin-left: 270px;
+    user-select: none;
 }
 
 .title {
@@ -11,9 +12,9 @@
 }
 
 .tools-table {
+    margin-top: 20px;
     width: 100%;
     border-collapse: collapse;
-    margin: 0 auto;
     background-color: #fff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -66,3 +67,85 @@
     justify-content: center;
     margin: 30px;
 }
+
+.form-block{
+    display: flex;
+    justify-content: center;
+}
+
+.tool-form {
+    border-radius: 10px;
+    margin-top: 20px;
+    padding-bottom: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border: 2px solid #ccc;
+    width: 50vh;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .form-actions {
+    margin: 10px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+  }
+
+  .add-button{
+    background-color: rgb(148, 207, 130);
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+  }
+
+  .cancel-button{
+    background-color: rgb(148, 207, 130);
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    width: 10vh;
+  }
+
+  .save-button{
+    background-color: rgb(148, 207, 130);
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    width: 10vh;
+  }
+
+  .add-button:hover{
+    background-color: rgb(108, 173, 88);
+  }
+
+  .modal-content {
+    position: fixed;
+    right: 0;
+    width: 350px;
+    height: 100vh;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .form-zone{
+    gap: 30px;
+    display: flex;
+    flex-direction: column;
+  }
+
+
+  .modified {
+    background-color: #c5e6bb; /* Bleu très clair */
+    transition: background-color 0.3s ease;
+  }
