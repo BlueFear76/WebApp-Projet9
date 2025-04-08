@@ -1,0 +1,37 @@
+.fc-event {
+  cursor: pointer; /* Changer le curseur au survol */
+  font-size: 14px; /* Réduire la taille de la police */
+  padding-left: 10px !important;
+}
+
+.fc-daygrid-event {
+  background-color: #86c2e0;
+  border-radius: 5px;
+  font-weight: bold;
+  white-space: normal;
+  text-overflow: ellipsis;  /* Affiche les "..." si le texte est trop long */
+  display: block;
+}
+
+.fc-event-title {
+  text-overflow: ellipsis;  /* Affiche "..." */
+  display: block;  /* Assure une gestion correcte */
+  max-width: 100%;  /* Limite la largeur à la case de l'événement */
+}
+
+.fc-daygrid-day-events {
+  max-height: 60px; /* Ajuste la hauteur max pour éviter que le texte ne dépasse */
+}
+
+.fc-daygrid-day {
+  background-color: #ffffff;
+}
+
+
+.tooltip {
+  font-size: 14px;
+  color: white;
+  background-color: black;
+  padding: 5px;
+  border-radius: 5px;
+}

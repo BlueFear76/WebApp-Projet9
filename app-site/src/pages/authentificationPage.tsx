@@ -4,13 +4,18 @@ import {TextField } from '@mui/material';
 import '../styles/authentificationPageStyle.css'
 import { useNavigate } from 'react-router-dom';
 
-export default function Authentification() {
 
-  const navigate = useNavigate(); // Hook de navigation
+interface AuthProps {
+  onLogin: () => void;
+}
 
-  // Fonction pour changer de page lors du clic
-  const handleClick = () => {
-    navigate('/home'); // Redirige vers la page /about
+const Authentification: React.FC<AuthProps> = ({ onLogin }) => {
+
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    onLogin();
+    navigate('/home');
   };
 
 
@@ -21,7 +26,9 @@ export default function Authentification() {
           <TextField label="Identifiant"></TextField>
           <TextField label ="Mot de Passe"></TextField>
         </div>
-        <button className='button' onClick={handleClick}>Se Connecter</button>
+        <button className='button' onClick={handleLogin}>Se Connecter</button>
     </div>
   );
 }
+
+export default Authentification;
