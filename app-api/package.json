@@ -1,7 +1,7 @@
 {
   "name": "tool-tracking-backend",
   "version": "0.0.1",
-  "description": "This backend uses **Role-Based Authentication** with **JWT Tokens** to protect all routes.",
+  "description": "",
   "author": "",
   "private": true,
   "license": "UNLICENSED",
@@ -90,9 +90,5 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  },
-  "main": "index.js",
-  "directories": {
-    "test": "test"
   }
 }

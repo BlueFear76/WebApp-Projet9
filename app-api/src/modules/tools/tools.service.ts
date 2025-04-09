@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { Tool } from './entity/tool.entity';
 import { CreateToolDto } from './dto/create-tool.dto';
 
@@ -32,6 +32,10 @@ export class ToolsService {
     return this.toolRepository.update(id, { lastKnownLocation: location });
   }
 
+  updateAssignationDate(id: number, updateAssignationDate: string) {
+    return this.toolRepository.update(id, { assignationDate: updateAssignationDate });
+  }
+
   updateStatus(id: number, status: string) {
     return this.toolRepository.update(id, { status });
   }
@@ -48,5 +52,17 @@ export class ToolsService {
 
     // If RFID is free, update the tool
     return this.toolRepository.update(id, { rfidTagId });
+  }
+
+  async updateAll(id: number, name: string, rfidTagId: string, status: string, lastKnownLocation: string){
+    const updatedData = {
+      name,
+      rfidTagId,
+      status,
+      lastKnownLocation,
+      assignationDate: 'inconnue',
+      note: ''
+    };
+    return this.toolRepository.update(id, updatedData);
   }
 }

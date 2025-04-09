@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, Patch } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Patch, Put } from '@nestjs/common';
 import { ToolsService } from './tools.service';
 import { CreateToolDto } from './dto/create-tool.dto';
 import { ApiTags, ApiBody } from '@nestjs/swagger';
@@ -39,19 +39,23 @@ export class ToolsController {
     return this.toolsService.assignRfidTag(+id, body.rfidTagId);
   }
 
-  @Patch(':id/update-status')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        status: { type: 'string', example: 'missing' },
-      },
+
+  @Patch(':id')
+  async updateAll(
+    @Param('id') id : string,
+    @Body() body: {
+      name: string;
+      rfidTagId: string;
+      status?: string;
+      lastKnownLocation?: string;
     },
-  })
-  async updateStatus(
-    @Param('id') id: string,
-    @Body() body: { status: string },
   ) {
-    return this.toolsService.updateStatus(+id, body.status);
+    return this.toolsService.updateAll(
+      Number(id),
+      body.name,
+      body.rfidTagId,
+      body.status || 'inconnu!', 
+      body.lastKnownLocation || 'inconnue!'
+    );
   }
 }

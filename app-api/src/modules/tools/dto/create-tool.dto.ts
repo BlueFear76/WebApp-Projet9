@@ -19,5 +19,7 @@ export class CreateToolDto {
     description: 'Description of the tool',
     required: false,
   })
-  description?: string;
+  note?: string;
+
+  assignationDate?: string;
 }

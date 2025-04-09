@@ -1,79 +1,114 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import '../styles/toolPageStyle.css';
 import { Autocomplete, TextField, Button, Modal, Box } from '@mui/material';
 
 interface Tool {
-  id_tool: number;
-  status: string;
-  type: string;
-  last_known_location_id: string;
-  tag_id: number;
-  mission_id: string;
+  id: number;
+  status?: string;
+  name: string;
+  lastKnownLocation?: string;
+  rfidTagId?: string;
+  mission_id?: string;
 }
 
-let fakeTools: Tool[] = [
-  { id_tool: 1, status: "active", type: "Pelle", last_known_location_id: "Versailles", tag_id: 201, mission_id: "1" },
-  { id_tool: 2, status: "maintenance", type: "Tronçonneuse", last_known_location_id: "Evry-Garden", tag_id: 202, mission_id: "2" },
-  { id_tool: 3, status: "active", type: "Tondeuse", last_known_location_id: "Paris", tag_id: 203, mission_id: "3" }
-];
+interface ToolDTO{
+  rfidTagId?: string;
+  name: string;
+  note?: string;
+  assignationDate?: Date;
+}
 
 export default function Tool() {
   const [showForm, setShowForm] = useState(false);
   const [editingTool, setEditingTool] = useState<Tool | null>(null);
   const [openModal, setOpenModal] = useState(false);
   const [modifiedToolId, setModifiedToolId] = useState<number | null>(null); // ID de l'outil modifié
+  const [tools, setTools] = useState<Tool[]>([]); // Liste des outils
 
-
+  // Utilisation du hook useCallback pour forcer le rafraîchissement de la page
   const [, updateState] = useState({});
   const forceUpdate = useCallback(() => updateState({}), []);
 
-  const existingToolTypes = Array.from(new Set(fakeTools.map(tool => tool.type)));
-
-  const onSaveTool = (e: React.FormEvent) => {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-
-    const type = (form.elements.namedItem('type') as HTMLInputElement).value;
-    const status = (form.elements.namedItem('status') as HTMLInputElement).value;
-    const tag_id = parseInt((form.elements.namedItem('tag_id') as HTMLInputElement).value);
-
-    const newTool: Tool = {
-      id_tool: fakeTools.length + 1,
-      type,
-      status,
-      last_known_location_id: "Non défini",
-      tag_id,
-      mission_id: "0",
-    };
-
-    fakeTools.push(newTool);
-    form.reset();
-    setShowForm(false); // Ferme le formulaire après l'ajout
-    forceUpdate();
+  
+  const fetchTools = async () => {
+    const response = await fetch('http://localhost:3001/tools');
+    const data = await response.json();
+    setTools(data);
   };
 
-  const onUpdateTool = (e: React.FormEvent) => {
+  useEffect(() => {
+    fetchTools(); // Charge les outils au premier rendu
+  }, []);
+
+  // Dédupliquer les types d'outils pour éviter les doublons
+  const existingToolTypes = Array.from(new Set(tools.map(tool => tool.name)));
+
+  const onSaveTool = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
   
-    const type = (form.elements.namedItem('type') as HTMLInputElement).value;
-    const status = (form.elements.namedItem('status') as HTMLInputElement).value;
-    const tag_id = parseInt((form.elements.namedItem('tag_id') as HTMLInputElement).value);
+    // Utilisation de 'FormData' pour récupérer les données du formulaire
+    const formData = new FormData(form);
+    const name = formData.get('name') as string;
+    const status = formData.get('status') as string;
+    const rfidTagId = formData.get('rfidTagId') as string;
   
-    if (editingTool) {
-      const updatedTool = { ...editingTool, type, status, tag_id };
-      fakeTools = fakeTools.map(tool => tool.id_tool === editingTool.id_tool ? updatedTool : tool);
+    // Vérification que toutes les valeurs sont bien récupérées
+    if (!name || !rfidTagId) {
+      alert('Veuillez remplir tous les champs.');
+      return;
+    }
+  
+    const newTool: ToolDTO = {
+      name,
+      rfidTagId
+    };
+  
+    // Enregistrer l'outil via une API (exemple avec fetch)
+    const response = await fetch('http://localhost:3001/tools', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newTool),
+    });
+  
+    if (response.ok) {
+      const addedTool = await response.json();
+      setTools([...tools, addedTool]);
+      form.reset();
+      setShowForm(false); // Ferme le formulaire après l'ajout
       forceUpdate();
-      setEditingTool(null);
-      setOpenModal(false); // Fermer le modal après la mise à jour
-  
-      // Mettre à jour l'ID de l'outil modifié
-      setModifiedToolId(editingTool.id_tool);
-  
-      // Réinitialiser l'ID modifié après un délai (par exemple, 2 secondes)
-      setTimeout(() => {
-        setModifiedToolId(null); // Réinitialiser après 2 secondes
-      }, 2000);
+    }
+  };
+
+  const onUpdateTool = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+
+    const name = (form.elements.namedItem('name') as HTMLInputElement).value;
+    const status = (form.elements.namedItem('status') as HTMLInputElement).value;
+    const tag_id = (form.elements.namedItem('rfidTagId') as HTMLInputElement).value;
+
+    if (editingTool) {
+      const updatedTool = { ...editingTool, name, status, rfidTagId : tag_id };
+      
+      // Mettre à jour l'outil via l'API (exemple avec fetch)
+      const response = await fetch(`http://localhost:3001/tools/${editingTool.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedTool),
+      });
+      console.log(updatedTool);
+
+      if (response.ok) {
+        // Après la mise à jour, re-fetch les outils pour avoir la liste la plus récente
+        fetchTools(); // Récupérer les outils mis à jour depuis le backend
+        setEditingTool(null);
+        setOpenModal(false); // Fermer le modal après la mise à jour
+      }
     }
   };
 
@@ -82,9 +117,15 @@ export default function Tool() {
     setOpenModal(true); // Ouvrir le modal pour modifier l'outil
   };
 
-  const onDeleteTool = (toolId: number) => {
-    fakeTools = fakeTools.filter(tool => tool.id_tool !== toolId);
-    forceUpdate();
+  const onDeleteTool = async (toolId: number) => {
+    const response = await fetch(`http://localhost:3001/tools/${toolId}`, {
+      method: 'DELETE',
+    });
+
+    if (response.ok) {
+      setTools(tools.filter(tool => tool.id !== toolId));
+      forceUpdate();
+    }
   };
 
   return (
@@ -106,19 +147,17 @@ export default function Tool() {
             <Autocomplete
               freeSolo
               options={existingToolTypes}
-              renderInput={(params) => <TextField {...params} label="Type" name="type" required slotProps={{ inputLabel: { required: false } }}/>}
+              renderInput={(params) => <TextField {...params} label="Type" name="name" required />}
             />
-
             <TextField
               label="Status"
               name="status"
-              required slotProps={{ inputLabel: { required: false } }}
+              required
             />
             <TextField
               label="ID Tag"
-              name="tag_id"
-              type="number"
-              required slotProps={{ inputLabel: { required: false } }}
+              name="rfidTagId"
+              required
             />
 
             <div className="form-actions">
@@ -131,37 +170,34 @@ export default function Tool() {
 
       {/* Table avec la liste des outils */}
       <table className="tools-table">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Status</th>
-      <th>Type</th>
-      <th>Dernière Localisation</th>
-      <th>Tag_id</th>
-      <th>Mission_id</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {fakeTools.map((tool) => (
-      <tr
-        key={tool.id_tool}
-        className={tool.id_tool === modifiedToolId ? 'modified' : ''}
-      >
-        <td>{tool.id_tool}</td>
-        <td>{tool.status}</td>
-        <td>{tool.type}</td>
-        <td>{tool.last_known_location_id}</td>
-        <td>{tool.tag_id}</td>
-        <td>{tool.mission_id}</td>
-        <td>
-          <button onClick={() => onEditTool(tool)}>Éditer</button>
-          <button onClick={() => onDeleteTool(tool.id_tool)}>Supprimer</button>
-        </td>
-      </tr>
-    ))}
-  </tbody>
-</table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Status</th>
+            <th>Type</th>
+            <th>Dernière Localisation</th>
+            <th>Tag_id</th>
+            <th>Mission_id</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tools.map((tool) => (
+            <tr key={tool.id}>
+              <td>{tool.id}</td>
+              <td>{tool.status}</td>
+              <td>{tool.name}</td>
+              <td>{tool.lastKnownLocation}</td>
+              <td>{tool.rfidTagId}</td>
+              <td>{tool.mission_id}</td>
+              <td>
+                <button onClick={() => onEditTool(tool)}>Éditer</button>
+                <button onClick={() => onDeleteTool(tool.id)}>Supprimer</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
       {/* Modal pour la modification de l'outil */}
       <Modal
@@ -175,25 +211,36 @@ export default function Tool() {
           <form className='form-zone' onSubmit={onUpdateTool}>
             <Autocomplete
               freeSolo
+              defaultValue={editingTool?.name}
               options={existingToolTypes}
-              value={editingTool?.type || ''}
-              renderInput={(params) => <TextField {...params} label="Type" name="type" defaultValue={editingTool?.type || ''} required slotProps={{ inputLabel: { required: false } }}/>}
+              getOptionLabel={(option) => option}
+              renderOption={(props, option, index) => (
+                <li {...props} key={`${option}-${index}`}>
+                  {option}
+                </li>
+              )}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Type"
+                  name="name"
+                  required
+                />
+              )}
             />
             <TextField
               label="Status"
               name="status"
               defaultValue={editingTool?.status || ''}
-              required slotProps={{ inputLabel: { required: false } }}
+              required
             />
             <TextField
               label="ID Tag"
-              name="tag_id"
-              type="number"
-              defaultValue={editingTool?.tag_id || ''}
-              required slotProps={{ inputLabel: { required: false } }}
+              defaultValue={editingTool?.rfidTagId || ''}
+              name="rfidTagId"
             />
             <div className="form-actions">
-              <button className='save-button'>Mettre à jour</button>
+              <button type="submit" className='save-button'>Mettre à jour</button>
               <button className='cancel-button' onClick={() => setOpenModal(false)} >Annuler</button>
             </div>
           </form>

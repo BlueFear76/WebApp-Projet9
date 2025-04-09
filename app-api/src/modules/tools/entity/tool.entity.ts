@@ -12,11 +12,14 @@ export class Tool {
   name: string; // Example: Chainsaw
 
   @Column({ nullable: true })
-  description: string; // Optional (Heavy duty chainsaw)
+  note: string;
 
   @Column({ default: 'available' })
   status: string; // available / missing / defective
 
   @Column({ nullable: true })
   lastKnownLocation: string; // Optional (Truck-001, Warehouse A)
+
+  @Column({ nullable: true })
+  assignationDate: string;
 }

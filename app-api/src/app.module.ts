@@ -14,6 +14,8 @@ import { VehiclesModule } from './modules/vehicles/vehicles.module';
 import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { EmployeeModule } from './modules/employee/employee.module';
 
+import { GeocodingModule } from './modules/geocoding/geocoding.module';
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -27,7 +29,7 @@ import { EmployeeModule } from './modules/employee/employee.module';
     ReadingsModule,
     ToolsModule,
     VehiclesModule,
-
+    GeocodingModule,
     AuthenticationModule,
     EmployeeModule,
   ],
