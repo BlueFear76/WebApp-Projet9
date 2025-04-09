@@ -5,6 +5,7 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 export enum EmployeeRole {
   ADMIN = 'admin',
   USER = 'user',
+  SUPERADMIN = 'superAdmin'
 }
 
 @Entity()

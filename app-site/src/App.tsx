@@ -5,6 +5,10 @@ import Authentification from './pages/authentificationPage';
 import Home from './pages/homePage';
 import Tool from './pages/toolPage';
 import MissionPage from './pages/missonPage';
+import EmployeePage from './pages/employeePage';
+
+import profilImage from './images/profil.svg'
+import userEvent from '@testing-library/user-event';
 
 interface User {
   firstname: string;
@@ -16,6 +20,8 @@ interface User {
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
+  const storedUser = localStorage.getItem('userLogged');
+  const userLogged = storedUser ? JSON.parse(storedUser) : null;
 
   const handleLogin = (userData: User) => {
     setUser(userData);
@@ -26,12 +32,22 @@ const App: React.FC = () => {
     <Router>
       {isAuthenticated && (
         <div className="sidebar">
-          <h2>Navigation</h2>
+          <div className='profilImage'>
+            <img src={profilImage} height={"150px"}/>
+          </div>
+          <h2>{userLogged.firstName} {userLogged.lastName}</h2>
           <ul>
-            <li><Link to="/home">Home</Link></li>
-            <li><Link to="/missions">Missions</Link></li>
-            <li><Link to="/tools">Outils</Link></li>
-            <li><Link to="/" onClick={() => setIsAuthenticated(false)}>Déconnexion</Link></li>
+            <div className="page-nav">
+              <li><Link to="/home">Home</Link></li>
+              <li><Link to="/missions">Missions</Link></li>
+              <li><Link to="/tools">Outils</Link></li>
+              {userLogged.role==="superAdmin" && (<li><Link to="/employees">Employés</Link></li>)}
+            </div>
+            <div className='disconnect'>
+              <li><Link to="/" onClick={() => setIsAuthenticated(false)}>Déconnexion</Link></li>
+            </div>
+            
+            
           </ul>
         </div>
       )}
@@ -53,6 +69,10 @@ const App: React.FC = () => {
           <Route 
             path="/missions" 
             element={isAuthenticated ? <MissionPage /> : <Navigate to="/" />} 
+          />
+          <Route
+            path="/employees"
+            element={isAuthenticated ? <EmployeePage /> : <Navigate to="/"/>}
           />
         </Routes>
       </div>

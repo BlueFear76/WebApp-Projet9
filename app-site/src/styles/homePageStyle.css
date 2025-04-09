@@ -1,6 +1,35 @@
 .homePage{
+    display: flex;
+    margin-top: 0px;
+    margin-bottom: 0px;
     color: rgb(20, 79, 35);
     font-family :'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    margin: 80px;
-    text-align: center;
+    padding: 50px;
+    margin-left: 25vh;
+    flex-direction: column;
+}
+
+.info{
+    margin-top: 40px;
+    width: 100%;
+    height: 60vh;
+    display: flex;
+    gap: 50px;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+.alerte{
+    flex-grow: 1;
+    padding: 20px;
+    border-radius: 20px;
+    border: 4px solid rgb(20, 79, 35);
+}
+
+.missions{
+    flex-grow: 1;
+    padding: 20px;
+    border-radius: 20px;
+    border: 4px solid rgb(20, 79, 35);
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import '../styles/authentificationPageStyle.css';
+import { jwtDecode } from 'jwt-decode';
 
 interface AuthProps {
   onLogin: (userData: User) => void;
@@ -20,7 +21,6 @@ const Authentification: React.FC<AuthProps> = ({ onLogin }) => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    // Remplace cette logique par la connexion réelle à ton backend
     const response = await fetch('http://localhost:3001/auth/login', {
       method: 'POST',
       headers: {
@@ -34,6 +34,10 @@ const Authentification: React.FC<AuthProps> = ({ onLogin }) => {
 
     if (response.ok) {
       const data = await response.json();
+      const decoded: any = jwtDecode(data.access_token);
+      console.log(decoded);
+
+      localStorage.setItem('userLogged', JSON.stringify(decoded));
       // Appel de onLogin avec les données de l'utilisateur
       onLogin({
         firstname: data.firstname,
