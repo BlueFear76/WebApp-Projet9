@@ -3,24 +3,28 @@ import { jwtDecode } from 'jwt-decode';
 import '../styles/homePageStyle.css'
 
 
-const HomePage: React.FC = () => {
-  const [userData, setUserData] = useState<any>(null);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token'); // Récupère le token depuis le localStorage
+interface User {
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: string;
+  sub: string;
+}
 
-    if (token) {
-      const decoded: any = jwtDecode(token); // Décoder le token pour obtenir le payload
-      setUserData(decoded); // Mettre à jour les données utilisateur avec le payload
-    }
-  }, []);
+interface HomePageProps {
+  user: User | null;
+}
+
+const HomePage: React.FC<HomePageProps> = ({user}) => {
+
+  console.log(user);
 
   return (
     <div className='homePage'>
       <h1>Mes Informations</h1>
-      <p>Email: {userData ? userData.email : 'Utilisateur'}</p>
-      <p>Rôle: {userData ? userData.role : 'Inconnu'}</p>
-      <p>ID: {userData ? userData.sub : 'Inconnu'}</p>
+      <h3>{user ? user.firstName : 'Inconnu'} {user ? user.lastName : 'Inconnu'}</h3>
+      <p>{user ? user.email : 'Utilisateur'}</p>
 
       <div className='info'>
         <div className='missions'>

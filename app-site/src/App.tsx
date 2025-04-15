@@ -8,6 +8,13 @@ import MissionPage from './pages/missonPage';
 import EmployeePage from './pages/employeePage';
 
 import profilImage from './images/profil.svg'
+import homeIcon from './images/home.svg';
+import missionIcon from './images/mission.svg';
+import toolIcon from './images/tool.svg';
+import employeeIcon from './images/employee.svg';
+import logoutIcon from './images/logout.svg';
+
+
 import userEvent from '@testing-library/user-event';
 
 interface User {
@@ -32,22 +39,44 @@ const App: React.FC = () => {
     <Router>
       {isAuthenticated && (
         <div className="sidebar">
-          <div className='profilImage'>
-            <img src={profilImage} height={"150px"}/>
-          </div>
-          <h2>{userLogged.firstName} {userLogged.lastName}</h2>
+          <h2>Navigation</h2>
           <ul>
             <div className="page-nav">
-              <li><Link to="/home">Home</Link></li>
-              <li><Link to="/missions">Missions</Link></li>
-              <li><Link to="/tools">Outils</Link></li>
-              {userLogged.role==="superAdmin" && (<li><Link to="/employees">Employés</Link></li>)}
+              <li>
+                <Link to="/home">
+                  <img src={homeIcon} alt="Home" className="nav-icon" />
+                  <span>Home</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/missions">
+                  <img src={missionIcon} alt="Missions" className="nav-icon" />
+                  <span>Missions</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/tools">
+                  <img src={toolIcon} alt="Outils" className="nav-icon" />
+                  <span>Outils</span>
+                </Link>
+              </li>
+              {userLogged.role === "superAdmin" && (
+                <li>
+                  <Link to="/employees">
+                    <img src={employeeIcon} alt="Employés" className="nav-icon" />
+                    <span>Employés</span>
+                  </Link>
+                </li>
+              )}
             </div>
             <div className='disconnect'>
-              <li><Link to="/" onClick={() => setIsAuthenticated(false)}>Déconnexion</Link></li>
+              <li>
+                <Link to="/" onClick={() => setIsAuthenticated(false)}>
+                 <img src={logoutIcon} alt="Outils" className="nav-icon" />
+                 <span>Déconnexion</span>
+                </Link>
+              </li>
             </div>
-            
-            
           </ul>
         </div>
       )}
@@ -60,7 +89,7 @@ const App: React.FC = () => {
           />
           <Route 
             path="/home" 
-            element={isAuthenticated ? <Home/> : <Navigate to="/" />} 
+            element={isAuthenticated ? <Home user={userLogged}/> : <Navigate to="/" />} 
           />
           <Route 
             path="/tools" 

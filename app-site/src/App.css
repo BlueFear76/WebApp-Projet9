@@ -42,7 +42,7 @@
 }
 
 .sidebar {
-  width: 25vh;
+  width: 9vh;
   height: 100vh;
   background: #2c5040;
   color: white;
@@ -51,63 +51,87 @@
   left: 0;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  align-items: flex-start;
+  font-family: 'Trebuchet MS', sans-serif;
+  transition: width 0.3s ease;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.sidebar:hover {
+  width: 250px;
+}
+
+.profilImage {
+  margin: 30px auto 10px;
 }
 
 .sidebar h2 {
   font-size: 20px;
-  margin-top: 30px;
-  margin-bottom: 20px;
-  text-align: center;
+  margin: 10px auto;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+}
+
+.sidebar:hover h2 {
+  opacity: 1;
 }
 
 .sidebar ul {
-  margin-top: 50px;
-  flex-grow: 1;
   list-style: none;
-  padding: 0px;
+  padding: 0;
+  margin-top: 30px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .sidebar ul li {
-  padding-left: 20px ! important;
-  padding: 10px 0;
+  width: 100%;
 }
 
 .sidebar ul li a {
+  display: flex;
+  align-items: center;
   color: white;
   text-decoration: none;
-  font-size: 18px;
-  display: block;
-  padding: 10px;
-  transition: background 0.3s;
+  font-size: 16px;
+  padding: 12px 15px;
+  transition: background 0.3s ease;
+  white-space: nowrap;
 }
 
 .sidebar ul li:hover {
   background: #1a3c27;
 }
 
-ul {
-  display: flex;
-  flex-direction: column;
-  min-height: 65%;
-  margin: 0; /* Retire les marges par défaut */
+.nav-icon {
+  margin-left: 10px;
+  width: 35px;
+  height: 35px;
+  flex-shrink: 0;
+  margin-right: 0px;
+  transition: margin 0.3s ease;
 }
 
+.sidebar:hover .nav-icon {
+  margin-right: 30px;
+}
+
+.sidebar span {
+  display: none;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar:hover span {
+  display: inline;
+  opacity: 1;
+}
 
 .disconnect {
+  width: 100%;
   margin-top: auto;
-  margin-bottom: 0px;
   padding-bottom: 20px;
-}
-
-.profilImage{
-  margin-top: 30px;
-  align-self: center;
-}
-
-.ligne{
-  background-color: white;
-  height: 10px;
-  width: 20px;
 }
