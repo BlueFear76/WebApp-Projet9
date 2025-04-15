@@ -105,13 +105,15 @@ html, body {
 }
 
 .disconnect{
-  margin-top: 65vh;
+  display: flex;
+  margin-bottom: 0px;
+  margin-top: auto;
 }
 
 /* Responsive Mobile */
 @media screen and (max-width: 768px) {
   .sidebar {
-    width: 100%;
+    width: 100vw;
     height: 60px;
     flex-direction: row;
     justify-content: center;
@@ -176,5 +178,8 @@ html, body {
   .disconnect{
     margin-top: 0vh;
   }
-  
+
+  .sidebar:hover .nav-icon {
+    margin-right: 0px;
+  }
 }
