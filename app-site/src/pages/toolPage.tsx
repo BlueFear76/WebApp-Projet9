@@ -22,14 +22,14 @@ export default function Tool() {
   const [showForm, setShowForm] = useState(false);
   const [editingTool, setEditingTool] = useState<Tool | null>(null);
   const [openModal, setOpenModal] = useState(false);
-  const [modifiedToolId, setModifiedToolId] = useState<number | null>(null); // ID de l'outil modifié
   const [tools, setTools] = useState<Tool[]>([]); // Liste des outils
+  const [sortField, setSortField] = useState<keyof Tool | null>(null);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
   // Utilisation du hook useCallback pour forcer le rafraîchissement de la page
   const [, updateState] = useState({});
   const forceUpdate = useCallback(() => updateState({}), []);
 
-  
   const fetchTools = async () => {
     const response = await fetch('http://localhost:3001/tools');
     const data = await response.json();
@@ -43,22 +43,57 @@ export default function Tool() {
   // Dédupliquer les types d'outils pour éviter les doublons
   const existingToolTypes = Array.from(new Set(tools.map(tool => tool.name)));
 
+  const sortedTools = [...tools].sort((a, b) => {
+    if (!sortField) return 0;
+
+    const fieldA = a[sortField];
+    const fieldB = b[sortField];
+
+    if (fieldA === undefined || fieldB === undefined) return 0;
+
+    if (typeof fieldA === 'number' && typeof fieldB === 'number') {
+      return sortDirection === 'asc' ? fieldA - fieldB : fieldB - fieldA;
+    }
+
+    return sortDirection === 'asc'
+      ? String(fieldA).localeCompare(String(fieldB))
+      : String(fieldB).localeCompare(String(fieldA));
+  });
+
+  const handleSort = (field: keyof Tool) => {
+    if (sortField === field) {
+      setSortDirection(prev => (prev === 'asc' ? 'desc' : 'asc'));
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
+  const renderSortIcons = (field: keyof Tool) => {
+    const isActive = sortField === field;
+    return (
+      <span style={{ marginLeft: 8 }}>
+        <span style={{ color: isActive && sortDirection === 'asc' ? 'black' : '#ccc' }}>▲</span>
+        <span style={{ color: isActive && sortDirection === 'desc' ? 'black' : '#ccc' }}>▼</span>
+      </span>
+    );
+  };
+
   const onSaveTool = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
-  
     // Utilisation de 'FormData' pour récupérer les données du formulaire
     const formData = new FormData(form);
     const name = formData.get('name') as string;
     const status = formData.get('status') as string;
     const rfidTagId = formData.get('rfidTagId') as string;
-  
+
     // Vérification que toutes les valeurs sont bien récupérées
     if (!name || !rfidTagId) {
       alert('Veuillez remplir tous les champs.');
       return;
     }
-  
+
     const newTool: ToolDTO = {
       name,
       rfidTagId
@@ -72,7 +107,7 @@ export default function Tool() {
       },
       body: JSON.stringify(newTool),
     });
-  
+
     if (response.ok) {
       const addedTool = await response.json();
       setTools([...tools, addedTool]);
@@ -85,7 +120,6 @@ export default function Tool() {
   const onUpdateTool = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
-
     const name = (form.elements.namedItem('name') as HTMLInputElement).value;
     const status = (form.elements.namedItem('status') as HTMLInputElement).value;
     const tag_id = (form.elements.namedItem('rfidTagId') as HTMLInputElement).value;
@@ -130,8 +164,7 @@ export default function Tool() {
 
   return (
     <div className="toolPage">
-      <h1 className="title">TOOL PAGE</h1>
-      
+      <h1 className="title">OUTILS</h1>
       {/* Bouton pour afficher le formulaire d'ajout d'un outil */}
       <button className='add-button' onClick={() => setShowForm(!showForm)}>
         Nouvel Outil
@@ -172,17 +205,17 @@ export default function Tool() {
       <table className="tools-table">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Status</th>
-            <th>Type</th>
-            <th>Dernière Localisation</th>
-            <th>Tag_id</th>
-            <th>Mission_id</th>
+            <th onClick={() => handleSort('id')} style={{ cursor: 'pointer' }}>ID {renderSortIcons('id')}</th>
+            <th onClick={() => handleSort('status')} style={{ cursor: 'pointer' }}>Status {renderSortIcons('status')}</th>
+            <th onClick={() => handleSort('name')} style={{ cursor: 'pointer' }}>Type {renderSortIcons('name')}</th>
+            <th onClick={() => handleSort('lastKnownLocation')} style={{ cursor: 'pointer' }}>Dernière Localisation {renderSortIcons('lastKnownLocation')}</th>
+            <th onClick={() => handleSort('rfidTagId')} style={{ cursor: 'pointer' }}>Tag_id {renderSortIcons('rfidTagId')}</th>
+            <th onClick={() => handleSort('mission_id')} style={{ cursor: 'pointer' }}>Mission_id {renderSortIcons('mission_id')}</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {tools.map((tool) => (
+          {sortedTools.map((tool) => (
             <tr key={tool.id}>
               <td>{tool.id}</td>
               <td>{tool.status}</td>
