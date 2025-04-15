@@ -54,7 +54,7 @@ const App: React.FC = () => {
                 <span>Outils</span>
               </Link>
             </li>
-            {userLogged?.role === "superAdmin" && (
+            {userLogged?.role === "admin" && (
               <li>
                 <Link to="/employees">
                   <img src={employeeIcon} alt="Employés" className="nav-icon" />

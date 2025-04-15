@@ -2,6 +2,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import '../styles/toolPageStyle.css';
 import { Autocomplete, TextField, Button, Modal, Box } from '@mui/material';
 
+import editIcon from '../images/edit.svg'
+
 interface Tool {
   id: number;
   status?: string;
@@ -25,6 +27,10 @@ export default function Tool() {
   const [tools, setTools] = useState<Tool[]>([]); // Liste des outils
   const [sortField, setSortField] = useState<keyof Tool | null>(null);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const storedUser = localStorage.getItem('userLogged');
+  const userLogged = storedUser ? JSON.parse(storedUser) : null;
+
+  console.log(userLogged);
 
   // Utilisation du hook useCallback pour forcer le rafraîchissement de la page
   const [, updateState] = useState({});
@@ -162,14 +168,23 @@ export default function Tool() {
     }
   };
 
+  const handleDeleteClick = () => {
+    if (editingTool) {
+      onDeleteTool(editingTool.id);
+      setOpenModal(false); // Fermer le modal après suppression
+      setEditingTool(null); // Réinitialiser l'état
+    }
+  };
+
   return (
     <div className="toolPage">
       <h1 className="title">OUTILS</h1>
       {/* Bouton pour afficher le formulaire d'ajout d'un outil */}
-      <button className='add-button' onClick={() => setShowForm(!showForm)}>
+      {userLogged.role === "admin" &&
+      (<button className='add-button' onClick={() => setShowForm(!showForm)}>
         Nouvel Outil
-      </button>
-
+      </button>)
+      }
       {/* Formulaire d'ajout d'un nouvel outil */}
       {showForm && (
         <div className="form-block">
@@ -195,7 +210,7 @@ export default function Tool() {
 
             <div className="form-actions">
               <button className='save-button'>Enregistrer</button>
-              <button className='cancel-button' onClick={() => setShowForm(false)}>Annuler</button>
+              <button className='save-button' onClick={() => setShowForm(false)}>Annuler</button>
             </div>
           </form>
         </div>
@@ -211,7 +226,7 @@ export default function Tool() {
             <th onClick={() => handleSort('lastKnownLocation')} style={{ cursor: 'pointer' }}>Dernière Localisation {renderSortIcons('lastKnownLocation')}</th>
             <th onClick={() => handleSort('rfidTagId')} style={{ cursor: 'pointer' }}>Tag_id {renderSortIcons('rfidTagId')}</th>
             <th onClick={() => handleSort('mission_id')} style={{ cursor: 'pointer' }}>Mission_id {renderSortIcons('mission_id')}</th>
-            <th>Actions</th>
+            <th className='actionColumn'/>
           </tr>
         </thead>
         <tbody>
@@ -223,10 +238,15 @@ export default function Tool() {
               <td>{tool.lastKnownLocation}</td>
               <td>{tool.rfidTagId}</td>
               <td>{tool.mission_id}</td>
+              
               <td>
-                <button onClick={() => onEditTool(tool)}>Éditer</button>
-                <button onClick={() => onDeleteTool(tool.id)}>Supprimer</button>
+              {userLogged.role === "admin" && (
+                <button className='editButton' onClick={() => onEditTool(tool)}>
+                  <img src={editIcon} alt="Éditer" style={{ width: '20px', height: '20px' }} />
+                </button>
+              )}
               </td>
+              
             </tr>
           ))}
         </tbody>
@@ -240,6 +260,7 @@ export default function Tool() {
         aria-describedby="modal-description"
       >
         <Box className="modal-content">
+          <button className='cancel-button' onClick={() => setOpenModal(false)}>&times; </button>
           <h2 id="modal-title">Modifier un Outil</h2>
           <form className='form-zone' onSubmit={onUpdateTool}>
             <Autocomplete
@@ -274,7 +295,7 @@ export default function Tool() {
             />
             <div className="form-actions">
               <button type="submit" className='save-button'>Mettre à jour</button>
-              <button className='cancel-button' onClick={() => setOpenModal(false)} >Annuler</button>
+              <button className='delete-button' onClick={handleDeleteClick}>Supprimer</button>
             </div>
           </form>
         </Box>

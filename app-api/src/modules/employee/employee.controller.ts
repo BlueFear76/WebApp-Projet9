@@ -26,7 +26,7 @@ import {
 @ApiTags('Employees')
 @ApiBearerAuth() // 👈 Tells Swagger to add Authorization: Bearer
 @Controller('employees')
-@UseGuards(JwtAuthGuard, RolesGuard) // 👈 Protect the whole controller with JWT + Roles
+//@UseGuards(JwtAuthGuard, RolesGuard) // 👈 Protect the whole controller with JWT + Roles
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
 
@@ -40,7 +40,7 @@ export class EmployeeController {
   }
 
   @Get()
-  @Roles('admin') // 👈 Only Admin can list all employees
+  //@Roles('admin') // 👈 Only Admin can list all employees 
   @ApiOperation({ summary: 'Get all employees (Admin only)' })
   @ApiResponse({ status: 200, description: 'List of employees' })
   async findAll() {

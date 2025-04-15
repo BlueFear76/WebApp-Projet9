@@ -65,4 +65,11 @@ export class ToolsService {
     };
     return this.toolRepository.update(id, updatedData);
   }
+
+  async remove(id: number): Promise<void> {
+    const result = await this.toolRepository.delete(id);
+    if (result.affected === 0) {
+      throw new BadRequestException(`Tool with ID ${id} not found.`);
+    }
+  }
 }

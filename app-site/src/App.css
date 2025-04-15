@@ -104,6 +104,10 @@ html, body {
   min-height: 100vh;
 }
 
+.disconnect{
+  margin-top: 65vh;
+}
+
 /* Responsive Mobile */
 @media screen and (max-width: 768px) {
   .sidebar {

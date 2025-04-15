@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, Patch, Put } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Patch, Put , Delete } from '@nestjs/common';
 import { ToolsService } from './tools.service';
 import { CreateToolDto } from './dto/create-tool.dto';
 import { ApiTags, ApiBody } from '@nestjs/swagger';
@@ -57,5 +57,11 @@ export class ToolsController {
       body.status || 'inconnu!', 
       body.lastKnownLocation || 'inconnue!'
     );
+  }
+
+  
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    return this.toolsService.remove(+id);
   }
 }
