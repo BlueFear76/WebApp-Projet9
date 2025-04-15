@@ -172,5 +172,9 @@ html, body {
   .sidebar:hover {
     width: 100%; /* Empêche la barre de s’élargir */
   }
+
+  .disconnect{
+    margin-top: 0vh;
+  }
   
 }
