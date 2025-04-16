@@ -42,6 +42,13 @@
   height: 40px;
 }
 
+.tools-table td {
+  padding: 0px 15px;
+  text-align: left;
+  font-size: 1rem;
+  color: #555;
+  border-bottom: 1px solid #ddd;
+}
 
 
 .tools-table tbody tr td:last-child {

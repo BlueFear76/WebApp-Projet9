@@ -7,10 +7,12 @@ import {
   Body,
   Param,
   Delete,
+  Patch,
   UseGuards,
 } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
+import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import { RolesGuard } from '../authentication/guards/roles.guard';
 import { Roles } from '../authentication/decorator/roles.decorator';
@@ -64,4 +66,15 @@ export class EmployeeController {
   async remove(@Param('id') id: number) {
     return this.employeeService.delete(id);
   }
+
+  @Patch(':id')
+  @Roles('admin') // 👈 Seuls les admins peuvent modifier
+  @ApiOperation({ summary: 'Update an employee by ID (Admin only)' })
+  @ApiParam({ name: 'id', type: Number })
+  @ApiBody({ type: UpdateEmployeeDto })
+  @ApiResponse({ status: 200, description: 'Employee updated' })
+  async update(@Param('id') id: number, @Body() updateDto: UpdateEmployeeDto) {
+    return this.employeeService.updateEmployee(id, updateDto);
+  }
+
 }
