@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsArray, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateMissionDto {
   @ApiProperty({
@@ -34,4 +35,13 @@ export class CreateMissionDto {
     format: 'date-time',
   })
   endDate: Date;
+
+  @ApiProperty({
+    example: [1, 2],
+    description: 'Assigned employees to a mission',
+  })
+  @IsOptional()
+  @IsArray()
+  @IsNumber({}, { each: true })
+  employeeIds: number[]; // Array of employee IDs to be assigned to the mission
 }
