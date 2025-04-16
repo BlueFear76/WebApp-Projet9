@@ -10,7 +10,6 @@ interface Tool {
   name: string;
   lastKnownLocation?: string;
   rfidTagId?: string;
-  mission_id?: string;
 }
 
 interface ToolDTO{
@@ -170,9 +169,12 @@ export default function Tool() {
 
   const handleDeleteClick = () => {
     if (editingTool) {
-      onDeleteTool(editingTool.id);
-      setOpenModal(false); // Fermer le modal après suppression
-      setEditingTool(null); // Réinitialiser l'état
+      const confirmDelete = window.confirm(`Voulez-vous vraiment supprimer cet outil ?`);
+        if (confirmDelete) {
+        onDeleteTool(editingTool.id);
+        setOpenModal(false); // Fermer le modal après suppression
+        setEditingTool(null); // Réinitialiser l'état
+      }
     }
   };
 
@@ -180,7 +182,7 @@ export default function Tool() {
     <div className="toolPage">
       <h1 className="title">OUTILS</h1>
       {/* Bouton pour afficher le formulaire d'ajout d'un outil */}
-      {userLogged.role === "admin" &&
+      {(userLogged.role === "admin"||userLogged.role==="superAdmin") &&
       (<button className='add-button' onClick={() => setShowForm(!showForm)}>
         Nouvel Outil
       </button>)
@@ -225,7 +227,6 @@ export default function Tool() {
             <th onClick={() => handleSort('name')} style={{ cursor: 'pointer' }}>Type {renderSortIcons('name')}</th>
             <th onClick={() => handleSort('lastKnownLocation')} style={{ cursor: 'pointer' }}>Dernière Localisation {renderSortIcons('lastKnownLocation')}</th>
             <th onClick={() => handleSort('rfidTagId')} style={{ cursor: 'pointer' }}>Tag_id {renderSortIcons('rfidTagId')}</th>
-            <th onClick={() => handleSort('mission_id')} style={{ cursor: 'pointer' }}>Mission_id {renderSortIcons('mission_id')}</th>
             <th className='actionColumn'/>
           </tr>
         </thead>
@@ -237,10 +238,8 @@ export default function Tool() {
               <td>{tool.name}</td>
               <td>{tool.lastKnownLocation}</td>
               <td>{tool.rfidTagId}</td>
-              <td>{tool.mission_id}</td>
-              
               <td>
-              {userLogged.role === "admin" && (
+              {(userLogged.role === "admin"||userLogged.role==="superAdmin") && (
                 <button className='editButton' onClick={() => onEditTool(tool)}>
                   <img src={editIcon} alt="Éditer" style={{ width: '20px', height: '20px' }} />
                 </button>
@@ -295,7 +294,7 @@ export default function Tool() {
             />
             <div className="form-actions">
               <button type="submit" className='save-button'>Mettre à jour</button>
-              <button className='delete-button' onClick={handleDeleteClick}>Supprimer</button>
+              <button className='save-button' onClick={handleDeleteClick}>Supprimer</button>
             </div>
           </form>
         </Box>

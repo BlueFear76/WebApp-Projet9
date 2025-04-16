@@ -161,9 +161,12 @@ const EmployeePage: React.FC = () => {
 
   const handleDeleteClick = () => {
     if (editingEmployee) {
-      onDeleteEmployee(editingEmployee.id);
-      setOpenModal(false); // Fermer le modal après suppression
-      setEditingEmployee(null); // Réinitialiser l'état
+      const confirmDelete = window.confirm(`Voulez-vous vraiment supprimer ${editingEmployee.firstname} ${editingEmployee.lastname} ?`);
+      if (confirmDelete) {
+        onDeleteEmployee(editingEmployee.id);
+        setOpenModal(false); // Fermer le modal après suppression
+        setEditingEmployee(null); // Réinitialiser l'état
+      }
     }
   };
 
@@ -243,7 +246,7 @@ const EmployeePage: React.FC = () => {
                 <td> A venir </td>
                 <td>{roleTranslation(employee.role)}</td>
                 <td>
-                  {userLogged.role === "admin" && (
+                  {userLogged.role === "superAdmin" && (
                     <button className='editButton' onClick={() => onEditEmployee(employee)}>
                       <img src={editIcon} alt="Éditer" style={{ width: '20px', height: '20px' }} />
                     </button>
@@ -263,7 +266,7 @@ const EmployeePage: React.FC = () => {
       >
         <Box className="modal-content">
           <button className='cancel-button' onClick={() => setOpenModal(false)}>&times; </button>
-          <h2 id="modal-title">Modifier un Outil</h2>
+          <h2 id="modal-title">Modifier un Employé</h2>
           <form className='form-zone' onSubmit={onUpdateEmployee}>
             <TextField
               label="Prénom"
@@ -292,7 +295,7 @@ const EmployeePage: React.FC = () => {
               >
                 <MenuItem value="user">User</MenuItem>
                 <MenuItem value="admin">Admin</MenuItem>
-                <MenuItem value="superadmin">Super Admin</MenuItem>
+                <MenuItem value="superAdmin">Super Admin</MenuItem>
               </Select>
             </FormControl>
             <div className="form-actions">
