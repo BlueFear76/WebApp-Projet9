@@ -5,6 +5,9 @@ import '../styles/missionPageStyle.css';
 import moment from 'moment';  // Importer moment.js
 import 'moment/locale/fr';  // Importer la locale française de moment
 import CustomCalendar from '../components/customCalendar';
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
+import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
+
 
 export default function MissionPage() {
   const [missionView, setMissionView] = useState('list'); // 'list' pour liste, 'calendar' pour calendrier
@@ -83,40 +86,40 @@ export default function MissionPage() {
   const renderMissions = () => {
     if (missionView === 'list') {
       return (
-        <table className="missions-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Description</th>
-            <th>Début</th>
-            <th>Fin</th>
-            <th>Durée</th>
-            <th>Groupe Mission</th>
-            <th>Adresse</th>
-            <th>Outils</th>
-          </tr>
-        </thead>
-        <tbody>
+        <Table className="missions-table">
+        <Thead>
+          <Tr>
+            <Th>ID</Th>
+            <Th>Description</Th>
+            <Th>Début</Th>
+            <Th>Fin</Th>
+            <Th>Durée</Th>
+            <Th>Groupe Mission</Th>
+            <Th>Adresse</Th>
+            <Th>Outils</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
           {fakeMissions.map((mission) => (
-            <tr key={mission.id}>
-              <td>{mission.id}</td>
-              <td>{mission.description}</td>
-              <td>{new Date(mission.start_time).toLocaleString()}</td>
-              <td>{new Date(mission.end_time).toLocaleString()}</td>
-              <td>{mission.duration} heures</td>
-              <td>{mission.travel?.id}</td>
-              <td>{mission.adress}</td>
-              <td>
+            <Tr key={mission.id}>
+              <Td>{mission.id}</Td>
+              <Td>{mission.description}</Td>
+              <Td>{new Date(mission.start_time).toLocaleString()}</Td>
+              <Td>{new Date(mission.end_time).toLocaleString()}</Td>
+              <Td>{mission.duration} heures</Td>
+              <Td>{mission.travel?.id}</Td>
+              <Td>{mission.adress}</Td>
+              <Td>
                 {mission.tools.map((tool, index) => (
                   <div key={index}>
                     <span>{tool.type}</span>
                   </div>
                 ))}
-              </td>
-            </tr>
+              </Td>
+            </Tr>
           ))}
-        </tbody>
-      </table>
+        </Tbody>
+      </Table>
       );
     } else if (missionView === 'calendar') {
       return (
