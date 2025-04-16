@@ -38,10 +38,17 @@
 
 /* Style des lignes du tableau */
 .tools-table tbody tr {
-  border-bottom: 2px solid #ddd;
+  border-bottom: 1px solid #ddd;
   height: 40px;
 }
 
+.tools-table td {
+  padding: 0px 15px;
+  text-align: left;
+  font-size: 1rem;
+  color: #555;
+  border-bottom: 1px solid #ddd;
+}
 
 
 .tools-table tbody tr td:last-child {
@@ -155,7 +162,7 @@
   padding: 10px;
   border-radius: 10px;
   border: none;
-  width: 10vh;
+  width: 200px;
 }
 
 .add-button:hover{

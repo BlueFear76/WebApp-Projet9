@@ -9,6 +9,17 @@
     font-size: 40px;
     text-align: center;
   }
+
+  .editButton {
+    margin: 5px;
+    display: flex;
+    background-color: rgb(148, 207, 130);
+    border: none;
+    border-radius: 7px;
+    padding: 7px;
+    align-items: center;
+  }
+  
   
   /* TABLEAU DES EMPLOYÉS */
   .employees-table {
@@ -16,13 +27,26 @@
     width: 100%;
     border-collapse: collapse;
     background-color: #fff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
   
   .employees-table thead {
     background-color: #4CAF50;
     color: white;
   }
+
+  .employees-table thead .actionColumn {
+    background-color: white;
+    color: white;
+    padding: 12px 15px;
+  }
+
+  .employees-table td:last-child {
+    border: white;
+    padding: 0px 15px;
+    color: #555;
+    width: 10px;
+  }
+  
   
   .employees-table th {
     padding: 12px 15px;
@@ -64,3 +88,87 @@
     margin: 30px;
   }
   
+
+  .form-block{
+    display: flex;
+    justify-content: center;
+  }
+  
+  .employee-form {
+    border-radius: 10px;
+    margin-top: 20px;
+    padding-bottom: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border: 2px solid #ccc;
+    width: 50vh;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .form-actions {
+    margin: 10px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .add-button{
+    background-color: rgb(148, 207, 130);
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+  }
+  
+  
+  .cancel-button{
+    font-size: 2.5em;
+    background-color: none;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    cursor: pointer;
+    padding: 0px;
+    border-radius: 10px;
+    border: none;
+    width: 40px;
+  }
+  
+  .save-button{
+    background-color: rgb(148, 207, 130);
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    width: 20vh;
+  }
+  
+  .add-button:hover{
+    background-color: rgb(108, 173, 88);
+  }
+
+  .modal-content {
+    position: fixed;
+    right: 0;
+    width: 350px;
+    padding-top: 0px;
+    padding: 20px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    overflow: auto;
+  }
+
+  .form-zone{
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modal-title{
+    padding: 0px;
+    margin: 0px;
+  }
