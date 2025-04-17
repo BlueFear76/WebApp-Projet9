@@ -26,7 +26,7 @@ export class Employee {
   @Column()
   password: string;
 
-  @Column({ type: 'text', default: EmployeeRole.USER })
+  @Column({ type: 'varchar', default: EmployeeRole.USER })
   role: EmployeeRole;
 
   @ManyToMany(() => Mission, (mission) => mission.employees)

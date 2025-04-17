@@ -15,15 +15,27 @@ import { AuthenticationModule } from './modules/authentication/authentication.mo
 import { EmployeeModule } from './modules/employee/employee.module';
 
 import { GeocodingModule } from './modules/geocoding/geocoding.module';
+import { Mission } from './modules/missions/entity/mission.entity';
+import { Employee } from './modules/employee/entities/employee.entity';
+import { Vehicle } from './modules/vehicles/entity/vehicle.entity';
+import { Tool } from './modules/tools/entity/tool.entity';
+import { Alert } from './modules/alerts/entity/alert.entity';
+import { ToolReading } from './modules/readings/entity/tool-reading.entity';
+import { config } from 'dotenv';
+config(); // Load environment variables from .env file
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'database.sqlite',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true, // Auto-create tables (good for dev)
-      // logging: true, // Enable logging (good for dev)
+      type: 'mysql', // Use MySQL
+      host: 'localhost', // Change this to your MySQL host
+      port: 3306, // Default MySQL port
+      username: 'root', // Use environment variable for username
+      password: process.env.DB_PASSWORD, // Use environment variable for password
+      database: process.env.DB_USERNAME, // Change this to your database name
+      entities: [Mission, Employee, Vehicle, Tool, Alert, ToolReading],
+      synchronize: true, // Be cautious with this in production (it syncs the DB structure automatically)
+      logging: true,
     }),
     MissionsModule, // (Add more modules later)
     ReadingsModule,
