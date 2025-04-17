@@ -44,4 +44,8 @@ export class CreateMissionDto {
   @IsArray()
   @IsNumber({}, { each: true })
   employeeIds: number[]; // Array of employee IDs to be assigned to the mission
+
+  @IsOptional()
+  @IsNumber()
+  vehicleId?: number; // Optional field for mission assignment
 }

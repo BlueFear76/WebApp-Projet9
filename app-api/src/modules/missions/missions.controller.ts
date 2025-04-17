@@ -19,6 +19,7 @@ import { In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Employee } from '../employee/entities/employee.entity';
 import { UpdateMissionEmployeesDto } from './dto/update-mission-employees.dto';
+import { AssignVehicleDto } from '../vehicles/dto/assign-vehicle.dto';
 
 @ApiTags('missions')
 @Controller('missions')
@@ -62,6 +63,22 @@ export class MissionsController {
   @ApiResponse({ status: 200, description: 'Mission updated.' })
   update(@Param('id') id: string, @Body() updateMissionDto: CreateMissionDto) {
     return this.missionsService.update(+id, updateMissionDto);
+  }
+
+  @Patch(':id/assign-vehicle')
+  @ApiParam({
+    name: 'id',
+    description: 'The ID of the mission to assign a vehicle to',
+    type: Number,
+  })
+  async assignVehicle(
+    @Param('id') missionId: number,
+    @Body() assignVehicleDto: AssignVehicleDto,
+  ) {
+    return this.missionsService.assignVehicle(
+      missionId,
+      assignVehicleDto.vehicleId,
+    );
   }
 
   @Patch(':id/employees')

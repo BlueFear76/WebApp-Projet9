@@ -1,5 +1,6 @@
 import { Employee } from 'src/modules/employee/entities/employee.entity';
 import { ToolReading } from 'src/modules/readings/entity/tool-reading.entity';
+import { Vehicle } from 'src/modules/vehicles/entity/vehicle.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -7,6 +8,8 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity()
@@ -46,4 +49,8 @@ export class Mission {
   })
   @JoinTable()
   employees: Employee[];
+
+  @ManyToOne(() => Vehicle, { nullable: true })
+  @JoinColumn()
+  vehicle: Vehicle;
 }
