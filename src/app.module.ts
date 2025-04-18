@@ -28,8 +28,8 @@ config(); // Load environment variables from .env file
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql', // Use MySQL
-      host:  'mysql.railway.internal', // Change this to your MySQL host
-      port: 3306, // Default MySQL port
+      host:  'interchange.proxy.rlwy.net', // Change this to your MySQL host
+      port: 50851, // Default MySQL port
       username:  'root', // Use environment variable for username
       password: 'iHsxMlGHUmCJFtRyZhWRZRIrxBePCGnX', // Use environment variable for password
       database: 'railway', // Change this to your database name
