@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-ro
 import './App.css';
 import Authentification from './pages/authentificationPage';
 import Home from './pages/homePage';
-import Tool from './pages/toolPage';
+import ToolPage from './pages/toolPage';
 import MissionPage from './pages/missonPage';
 import EmployeePage from './pages/employeePage';
 
@@ -12,6 +12,7 @@ import missionIcon from './images/mission.svg';
 import toolIcon from './images/tool.svg';
 import employeeIcon from './images/employee.svg';
 import logoutIcon from './images/logout.svg';
+import MissionCreationPage from './pages/missionCreationPage';
 
 interface User {
   firstname: string;
@@ -76,9 +77,10 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Authentification onLogin={handleLogin} />} />
           <Route path="/home" element={isAuthenticated ? <Home user={userLogged}/> : <Navigate to="/" />} />
-          <Route path="/tools" element={isAuthenticated ? <Tool /> : <Navigate to="/" />} />
+          <Route path="/tools" element={isAuthenticated ? <ToolPage /> : <Navigate to="/" />} />
           <Route path="/missions" element={isAuthenticated ? <MissionPage /> : <Navigate to="/" />} />
           <Route path="/employees" element={isAuthenticated ? <EmployeePage /> : <Navigate to="/" />} />
+          <Route path="/create-mission" element={isAuthenticated ? <MissionCreationPage /> : <Navigate to="/" />} />
         </Routes>
       </div>
     </Router>

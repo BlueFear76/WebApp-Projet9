@@ -26,7 +26,7 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({ events }) => {
     const { event } = eventInfo;
     
     return (
-      <div>
+      <div className='calendar'>
         <span data-tooltip-id={`tooltip-${event.id}`}>
           {event.title}
         </span>

@@ -1,8 +1,9 @@
 .toolPage {
   color: rgb(20, 79, 35);
+  margin-top: 1vw;
+  margin-left: 5vw;
+  margin-right: 3vw;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  margin: 80px;
-  margin-left: 15vh;
 }
 
 .title {

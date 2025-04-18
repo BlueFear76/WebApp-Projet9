@@ -1,5 +1,16 @@
+import { Employee } from 'src/modules/employee/entities/employee.entity';
 import { ToolReading } from 'src/modules/readings/entity/tool-reading.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Vehicle } from 'src/modules/vehicles/entity/vehicle.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 
 @Entity()
 export class Mission {
@@ -32,4 +43,14 @@ export class Mission {
 
   @OneToMany(() => ToolReading, (reading) => reading.mission)
   readings: ToolReading[];
+
+  @ManyToMany(() => Employee, (employee) => employee.missions, {
+    cascade: true,
+  })
+  @JoinTable()
+  employees: Employee[];
+
+  @ManyToOne(() => Vehicle, { nullable: true })
+  @JoinColumn()
+  vehicle: Vehicle;
 }

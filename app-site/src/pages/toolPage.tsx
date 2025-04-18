@@ -1,16 +1,9 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import '../styles/toolPageStyle.css';
 import { Autocomplete, TextField, Button, Modal, Box } from '@mui/material';
+import { Tool } from '../models/Tool';
 
 import editIcon from '../images/edit.svg'
-
-interface Tool {
-  id: number;
-  status?: string;
-  name: string;
-  lastKnownLocation?: string;
-  rfidTagId?: string;
-}
 
 interface ToolDTO{
   rfidTagId?: string;
@@ -19,7 +12,7 @@ interface ToolDTO{
   assignationDate?: Date;
 }
 
-export default function Tool() {
+export default function ToolPage() {
   const [showForm, setShowForm] = useState(false);
   const [editingTool, setEditingTool] = useState<Tool | null>(null);
   const [openModal, setOpenModal] = useState(false);

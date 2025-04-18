@@ -1,11 +1,12 @@
 // src/employee/entities/employee.entity.ts
 
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Mission } from 'src/modules/missions/entity/mission.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
 
 export enum EmployeeRole {
   ADMIN = 'admin',
   USER = 'user',
-  SUPERADMIN = 'superAdmin'
+  SUPERADMIN = 'superAdmin',
 }
 
 @Entity()
@@ -25,6 +26,9 @@ export class Employee {
   @Column()
   password: string;
 
-  @Column({ type: 'text', default: EmployeeRole.USER })
+  @Column({ type: 'varchar', default: EmployeeRole.USER })
   role: EmployeeRole;
+
+  @ManyToMany(() => Mission, (mission) => mission.employees)
+  missions: Mission[];
 }

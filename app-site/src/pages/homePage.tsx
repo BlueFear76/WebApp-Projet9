@@ -22,7 +22,7 @@ const HomePage: React.FC<HomePageProps> = ({user}) => {
 
   return (
     <div className='homePage'>
-      <h1>Mes Informations</h1>
+      <h1 className='title'>Mes Informations</h1>
       <h3>{user ? user.firstName : 'Inconnu'} {user ? user.lastName : 'Inconnu'}</h3>
       <p>{user ? user.email : 'Utilisateur'}</p>
 
