@@ -28,11 +28,11 @@ config(); // Load environment variables from .env file
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql', // Use MySQL
-      host: process.env.DB_HOST, // Change this to your MySQL host
+      host: process.env.DB_HOST || "sql7.freesqldatabase.com", // Change this to your MySQL host
       port: 3306, // Default MySQL port
-      username: process.env.DB_USERNAME, // Use environment variable for username
-      password: process.env.DB_PASSWORD, // Use environment variable for password
-      database: process.env.DB_USERNAME, // Change this to your database name
+      username: process.env.DB_USERNAME || "sql7773844", // Use environment variable for username
+      password: process.env.DB_PASSWORD || "U9i1Yt4kHE", // Use environment variable for password
+      database: process.env.DB_USERNAME || "sql7773844", // Change this to your database name
       entities: [Mission, Employee, Vehicle, Tool, Alert, ToolReading],
       synchronize: true, // Be cautious with this in production (it syncs the DB structure automatically)
       logging: true,
