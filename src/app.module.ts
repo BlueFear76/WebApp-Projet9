@@ -28,14 +28,14 @@ config(); // Load environment variables from .env file
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql', // Use MySQL
-      host:  'sql7.freesqldatabase.com', // Change this to your MySQL host
+      host:  'mysql.railway.internal', // Change this to your MySQL host
       port: 3306, // Default MySQL port
-      username:  'sql7773844', // Use environment variable for username
-      password: 'U9i1Yt4kHE', // Use environment variable for password
-      database: 'sql7773844', // Change this to your database name
+      username:  'root', // Use environment variable for username
+      password: 'iHsxMlGHUmCJFtRyZhWRZRIrxBePCGnX', // Use environment variable for password
+      database: 'railway', // Change this to your database name
       entities: [Mission, Employee, Vehicle, Tool, Alert, ToolReading],
       synchronize: true, // Be cautious with this in production (it syncs the DB structure automatically)
-      logging: true,
+      autoLoadEntities: true,
     }),
     MissionsModule, // (Add more modules later)
     ReadingsModule,
