@@ -22,10 +22,13 @@ import { Tool } from './modules/tools/entity/tool.entity';
 import { Alert } from './modules/alerts/entity/alert.entity';
 import { ToolReading } from './modules/readings/entity/tool-reading.entity';
 import { config } from 'dotenv';
+import { ConfigModule } from '@nestjs/config';
 config(); // Load environment variables from .env file
 
 @Module({
-  imports: [
+  imports: [ ConfigModule.forRoot({
+    isGlobal:true
+  }),
     TypeOrmModule.forRoot({
       type: 'mysql', // Use MySQL
       host: process.env.DB_HOST || 'interchange.proxy.rlwy.net', // Change this to your MySQL host
