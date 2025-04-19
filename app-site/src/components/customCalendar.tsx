@@ -1,15 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Calendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from "@fullcalendar/interaction";
 import './customCalendarStyle.css';
-import { Tooltip } from 'react-tooltip';
-import { EventContentArg } from '@fullcalendar/core';
+import { EventClickArg, EventContentArg } from '@fullcalendar/core';
 import moment from 'moment';
-import { EventApi } from '@fullcalendar/core';
 
-interface CalendarEvent{
+interface CalendarEvent {
   extendedProps: {
     description?: string;
     location?: string;
@@ -22,29 +20,24 @@ interface CustomCalendarProps {
 }
 
 const CustomCalendar: React.FC<CustomCalendarProps> = ({ events }) => {
-  const renderEventContent = (eventInfo: EventContentArg) => {
-    const { event } = eventInfo;
-    
-    return (
-      <div className='calendar'>
-        <span data-tooltip-id={`tooltip-${event.id}`}>
-          {event.title}
-        </span>
-        <Tooltip id={`tooltip-${event.id}`} place="top">
-          <strong>{event.title}</strong><br />
-          <strong>Début :</strong> {moment(event.start).format('DD/MM/YYYY HH:mm')}<br />
-          <strong>Fin :</strong> {moment(event.end).format('DD/MM/YYYY HH:mm')}<br />
-          <strong>Adresse :</strong> {event.extendedProps.location || 'Aucune adresse disponible'}<br />
-          <strong>Description :</strong> {event.extendedProps.description || 'Aucune description disponible'}<br />
-      </Tooltip>
-      </div>
-    );
+  const [selectedEvent, setSelectedEvent] = useState<any>(null);
+
+  const handleEventClick = (clickInfo: EventClickArg) => {
+    setSelectedEvent(clickInfo.event);
   };
+
+  const closeModal = () => setSelectedEvent(null);
+
+  const renderEventContent = (eventInfo: EventContentArg) => (
+    <div className='calendar'>
+      <span>{eventInfo.event.title}</span>
+    </div>
+  );
 
   return (
     <div className="calendarStyle">
       <Calendar
-        plugins={[dayGridPlugin, timeGridPlugin]}
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
         headerToolbar={{
           left: 'prev,next today',
@@ -53,9 +46,24 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({ events }) => {
         }}
         locale="fr"
         events={events}
-        height="70vh"
-        eventContent={renderEventContent} // Utilisation correcte
+        height="100vh"
+        eventContent={renderEventContent}
+        eventClick={handleEventClick}
       />
+
+      {/* Modal */}
+      {selectedEvent && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <button className="close-btn" onClick={closeModal}>✕</button>
+            <h2>{selectedEvent.extendedProps.description}</h2>
+            <p><strong>Adresse :</strong> {selectedEvent.extendedProps.location || 'Aucune adresse disponible'}</p>
+            <p><strong>Début :</strong> {moment(selectedEvent.start).format('DD/MM/YYYY HH:mm')}</p>
+            <p><strong>Fin :</strong> {moment(selectedEvent.end).format('DD/MM/YYYY HH:mm')}</p>
+            
+          </div>
+        </div>
+      )}
     </div>
   );
 };

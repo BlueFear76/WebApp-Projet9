@@ -227,7 +227,6 @@ const EmployeePage: React.FC = () => {
         <table className="employees-table">
           <thead>
             <tr>
-              <th>ID</th>
               <th>Prénom</th>
               <th>Nom</th>
               <th>Login</th>
@@ -239,7 +238,6 @@ const EmployeePage: React.FC = () => {
           <tbody>
             {employees.map((employee) => (
               <tr key={employee.id}>
-                <td>{employee.id}</td>
                 <td>{employee.firstname}</td>
                 <td>{employee.lastname}</td>
                 <td>{employee.email}</td>

@@ -6,6 +6,8 @@ import {
     Post,
     UseInterceptors,
     UploadedFile,
+    Param,
+    NotFoundException
   } from '@nestjs/common';
   import { FileInterceptor } from '@nestjs/platform-express';
   import { Express } from 'express';  
@@ -30,6 +32,18 @@ import {
     @ApiResponse({ status: 200, description: 'List of customers' })
     async findAll() {
       return this.customerService.findAll();
+    }
+
+    @Get(':id')
+    @ApiOperation({ summary: 'Get a customer by ID' })
+    @ApiResponse({ status: 200, description: 'Customer found' })
+    @ApiResponse({ status: 404, description: 'Customer not found' })
+    async findOne(@Param('id') id: string) {
+      const customer = await this.customerService.findOneById(+id);
+      if (!customer) {
+        throw new NotFoundException(`Customer with ID ${id} not found`);
+      }
+      return customer;
     }
     
     @ApiConsumes('multipart/form-data')

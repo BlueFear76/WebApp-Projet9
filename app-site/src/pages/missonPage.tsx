@@ -8,7 +8,7 @@ import CustomCalendar from '../components/customCalendar';
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 import { Tool } from '../models/Tool';
-import { List } from '@mui/material';
+import { Customer } from '../models/Customer';
 
 import ListIcon from '../images/list.svg'
 import CalendarIcon from '../images/mission.svg'
@@ -20,6 +20,7 @@ export default function MissionPage() {
   const [missions, setMissions] = useState<Mission[]>([]);
   const storedUser = localStorage.getItem('userLogged');
   const userLogged = storedUser ? JSON.parse(storedUser) : null;
+  const [customers, setCustomers] = useState<Customer[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,6 +32,20 @@ export default function MissionPage() {
       .catch((err) => {
         console.error('Erreur lors du chargement des missions :', err);
       });
+  }, []);
+
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      try {
+        const res = await fetch('http://localhost:3001/customers');
+        const data = await res.json();
+        setCustomers(data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des clients :", error);
+      }
+    };
+  
+    fetchCustomers();
   }, []);
 
   const convertMissionsToEvents = (missions: Mission[]) => {
@@ -87,7 +102,7 @@ export default function MissionPage() {
           {missions.map((mission) => (
             <Tr key={mission.id}>
               <Td>{mission.description}</Td>
-              <Td>{mission.customerId}</Td>
+              <Td>{getCustomerDisplayName(mission.customerId)}</Td>
               <Td>{new Date(mission.startDate).toLocaleString()}</Td>
               <Td>{new Date(mission.endDate).toLocaleString()}</Td>
               <Td>
@@ -115,6 +130,16 @@ export default function MissionPage() {
       );
     }
   };
+
+  const getCustomerDisplayName = (customerId: number) => {
+    const customer = customers.find(c => c.id === customerId);
+    if (!customer) return 'Client inconnu';
+  
+    return customer.companyName
+      ? customer.companyName
+      : `${customer.firstName ?? ''} ${customer.lastName ?? ''}`.trim();
+  };
+
 
   return (
     <div className="missionPage">

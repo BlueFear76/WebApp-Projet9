@@ -55,4 +55,8 @@ export class CustomerService {
     await this.deleteAll();
     return this.customerRepository.save(customers);
   }
+
+  async findOneById(id: number) {
+    return this.customerRepository.findOne({ where: { id } });
+  }
 }

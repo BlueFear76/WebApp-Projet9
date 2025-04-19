@@ -2,18 +2,19 @@
 
 .fc-event {
   cursor: pointer; /* Changer le curseur au survol */
-  font-size: 14px; /* Réduire la taille de la police */
+  font-size: 11px; /* Réduire la taille de la police */
   padding-left: 10px !important;
 }
 
 .fc-daygrid-event {
-  background-color: #86c2e0;
+  background-color: #86e0b0;
   border-radius: 5px;
   font-weight: bold;
   white-space: normal;
   text-overflow: ellipsis;  /* Affiche les "..." si le texte est trop long */
   display: block;
 }
+
 
 .fc-event-title {
   text-overflow: ellipsis;  /* Affiche "..." */
@@ -36,4 +37,34 @@
   background-color: black;
   padding: 5px;
   border-radius: 5px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  float: right;
+  cursor: pointer;
 }

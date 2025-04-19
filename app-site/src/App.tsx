@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
 import './App.css';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import Authentification from './pages/authentificationPage';
 import Home from './pages/homePage';
 import ToolPage from './pages/toolPage';
@@ -28,10 +29,26 @@ const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const storedUser = localStorage.getItem('userLogged');
   const userLogged = storedUser ? JSON.parse(storedUser) : null;
+  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
   const handleLogin = (userData: User) => {
     setUser(userData);
     setIsAuthenticated(true);
+  };
+
+  const handleLogout = () => {
+    setLogoutDialogOpen(false);
+    setIsAuthenticated(false);
+    setUser(null);
+    localStorage.removeItem('userLogged'); // si tu veux clean le localStorage
+  };
+  
+  const openLogoutDialog = () => {
+    setLogoutDialogOpen(true);
+  };
+  
+  const closeLogoutDialog = () => {
+    setLogoutDialogOpen(false);
   };
 
   return (
@@ -74,7 +91,7 @@ const App: React.FC = () => {
               </li>
             )}
             <li className="disconnect">
-              <Link to="/" onClick={() => setIsAuthenticated(false)}>
+              <Link to="#" onClick={openLogoutDialog}>
                 <img src={logoutIcon} alt="Déconnexion" className="nav-icon" />
                 <span>Déconnexion</span>
               </Link>
@@ -94,6 +111,20 @@ const App: React.FC = () => {
           <Route path="/create-mission" element={isAuthenticated ? <MissionCreationPage /> : <Navigate to="/" />} />
         </Routes>
       </div>
+      <Dialog className='logOutDialogBox' open={logoutDialogOpen} onClose={closeLogoutDialog}>
+        <DialogTitle>Déconnexion</DialogTitle>
+        <DialogContent>
+          Êtes-vous sûr(e) de vouloir vous déconnecter ?
+        </DialogContent>
+        <DialogActions className='logOutDialogButton'>
+          <button className="button" onClick={closeLogoutDialog}>
+            Annuler
+          </button>
+          <button className="button" onClick={handleLogout}>
+            Se déconnecter
+          </button>
+        </DialogActions>
+      </Dialog>
     </Router>
   );
 }
