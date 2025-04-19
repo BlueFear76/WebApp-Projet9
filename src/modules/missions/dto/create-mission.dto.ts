@@ -45,6 +45,10 @@ export class CreateMissionDto {
   @IsNumber({}, { each: true })
   employeeIds: number[]; // Array of employee IDs to be assigned to the mission
 
+  @ApiProperty({
+    example: 1,
+    description: 'Vehicle ID to assign the mission to',
+  })
   @IsOptional()
   @IsNumber()
   vehicleId?: number; // Optional field for mission assignment

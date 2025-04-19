@@ -20,6 +20,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Employee } from '../employee/entities/employee.entity';
 import { UpdateMissionEmployeesDto } from './dto/update-mission-employees.dto';
 import { AssignVehicleDto } from '../vehicles/dto/assign-vehicle.dto';
+import { Mission } from './entity/mission.entity';
 
 @ApiTags('missions')
 @Controller('missions')
@@ -99,5 +100,10 @@ export class MissionsController {
   @ApiResponse({ status: 200, description: 'Mission deleted.' })
   remove(@Param('id') id: string) {
     return this.missionsService.remove(+id);
+  }
+
+  @Get('vehicle/:vehicleId')
+  async getMissionByVehicleId(@Param('vehicleId') vehicleId: string): Promise<Mission> {
+    return this.missionsService.getMissionByVehicleId(vehicleId);
   }
 }

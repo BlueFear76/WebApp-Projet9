@@ -145,4 +145,17 @@ export class MissionsService {
     const mission = await this.findOne(id);
     return this.missionRepository.remove(mission);
   }
+
+  async getMissionByVehicleId(vehicleId: string): Promise<Mission> {
+    const mission = await this.missionRepository.findOne({
+      where: { vehicle: { id: Number(vehicleId) } },
+      relations: ['vehicle'], // if vehicle is a relation
+    });
+
+    if (!mission) {
+      throw new NotFoundException(`No mission found for vehicle ID ${vehicleId}`);
+    }
+
+    return mission;
+  }
 }
