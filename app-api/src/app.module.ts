@@ -22,6 +22,8 @@ import { Tool } from './modules/tools/entity/tool.entity';
 import { Alert } from './modules/alerts/entity/alert.entity';
 import { ToolReading } from './modules/readings/entity/tool-reading.entity';
 import { config } from 'dotenv';
+import { CustomerModule } from './modules/customer/customer.module';
+import { Customer } from './modules/customer/entities/customer.entity';
 config(); // Load environment variables from .env file
 
 @Module({
@@ -33,7 +35,15 @@ config(); // Load environment variables from .env file
       username: process.env.DB_USERNAME, // Use environment variable for username
       password: process.env.DB_PASSWORD, // Use environment variable for password
       database: process.env.DB_USERNAME, // Change this to your database name
-      entities: [Mission, Employee, Vehicle, Tool, Alert, ToolReading],
+      entities: [
+        Mission,
+        Employee,
+        Vehicle,
+        Tool,
+        Alert,
+        ToolReading,
+        Customer,
+      ],
       synchronize: true, // Be cautious with this in production (it syncs the DB structure automatically)
       logging: true,
     }),
@@ -44,6 +54,7 @@ config(); // Load environment variables from .env file
     GeocodingModule,
     AuthenticationModule,
     EmployeeModule,
+    CustomerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

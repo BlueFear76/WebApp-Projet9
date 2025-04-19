@@ -14,11 +14,11 @@
 }
 
 .missions-table {
-    width: 100%;
     border-collapse: collapse;
     margin: 0 auto;
     background-color: #fff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    table-layout: auto;
   }
   
   /* Style des en-têtes du tableau */
@@ -30,7 +30,7 @@
   .missions-table th {
     padding: 12px 15px;
     text-align: left;
-    font-size: 1.1rem;
+    font-size: 12px;
   }
   
   /* Style des lignes du tableau */
@@ -43,6 +43,7 @@
     text-align: left;
     font-size: 1rem;
     color: #555;
+    font-size: 12px;
   }
   
   .missions-content.calendar-view {

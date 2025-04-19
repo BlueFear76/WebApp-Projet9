@@ -73,8 +73,8 @@ export default function MissionPage() {
         <Table className="missions-table">
         <Thead>
           <Tr>
-            <Th>ID</Th>
             <Th>Description</Th>
+            <Th>Client</Th>
             <Th>Début</Th>
             <Th>Fin</Th>
             <Th>Durée</Th>
@@ -86,8 +86,8 @@ export default function MissionPage() {
         <Tbody>
           {missions.map((mission) => (
             <Tr key={mission.id}>
-              <Td>{mission.id}</Td>
               <Td>{mission.description}</Td>
+              <Td>{mission.customerId}</Td>
               <Td>{new Date(mission.startDate).toLocaleString()}</Td>
               <Td>{new Date(mission.endDate).toLocaleString()}</Td>
               <Td>

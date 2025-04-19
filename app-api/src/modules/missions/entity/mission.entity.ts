@@ -1,6 +1,7 @@
 import { Employee } from 'src/modules/employee/entities/employee.entity';
 import { ToolReading } from 'src/modules/readings/entity/tool-reading.entity';
 import { Vehicle } from 'src/modules/vehicles/entity/vehicle.entity';
+import { Customer } from 'src/modules/customer/entities/customer.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -53,4 +54,8 @@ export class Mission {
   @ManyToOne(() => Vehicle, { nullable: true })
   @JoinColumn()
   vehicle: Vehicle;
+
+
+  @Column()
+  customerId: number;
 }

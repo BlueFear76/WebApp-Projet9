@@ -6,6 +6,7 @@ import Home from './pages/homePage';
 import ToolPage from './pages/toolPage';
 import MissionPage from './pages/missonPage';
 import EmployeePage from './pages/employeePage';
+import CustomerPage from './pages/customerPage';
 
 import homeIcon from './images/home.svg';
 import missionIcon from './images/mission.svg';
@@ -13,6 +14,7 @@ import toolIcon from './images/tool.svg';
 import employeeIcon from './images/employee.svg';
 import logoutIcon from './images/logout.svg';
 import MissionCreationPage from './pages/missionCreationPage';
+import customerIcon from './images/customer.svg'
 
 interface User {
   firstname: string;
@@ -55,6 +57,14 @@ const App: React.FC = () => {
                 <span>Outils</span>
               </Link>
             </li>
+            {(userLogged?.role === "admin" || userLogged?.role === "superAdmin") && (
+              <li>
+                <Link to="/customers">
+                  <img src={customerIcon} alt="Customers" className="nav-icon" />
+                  <span>Clients</span>
+                </Link>
+              </li>
+            )}
             {userLogged?.role === "superAdmin" && (
               <li>
                 <Link to="/employees">
@@ -80,6 +90,7 @@ const App: React.FC = () => {
           <Route path="/tools" element={isAuthenticated ? <ToolPage /> : <Navigate to="/" />} />
           <Route path="/missions" element={isAuthenticated ? <MissionPage /> : <Navigate to="/" />} />
           <Route path="/employees" element={isAuthenticated ? <EmployeePage /> : <Navigate to="/" />} />
+          <Route path="/customers" element={isAuthenticated ? <CustomerPage /> : <Navigate to="/" />} />
           <Route path="/create-mission" element={isAuthenticated ? <MissionCreationPage /> : <Navigate to="/" />} />
         </Routes>
       </div>

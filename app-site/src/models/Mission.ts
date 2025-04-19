@@ -10,6 +10,7 @@ export interface Mission {
     endDate: Date;
     vehicleId: number;
     assignedToolNames: string[];
+    customerId: number;
   };
 
 export interface MissionDTO{
@@ -20,5 +21,5 @@ export interface MissionDTO{
     endDate : Date;
     employeeIds?: Employee[];
     VehicleId?: number;
-
+    customerId: number;
 }
