@@ -31,6 +31,10 @@ export class EmployeeService {
       throw new NotFoundException('Email already exists');
     }
 
+    if (typeof window !== 'undefined' && !window.crypto) {
+      window.crypto = require('crypto').webcrypto;
+    }
+
     // Generate random password
     const generatedPassword = randomBytes(6).toString('hex'); // 12 characters random
 
@@ -82,16 +86,19 @@ export class EmployeeService {
     }
   }
 
-  async updateEmployee(id: number, updateData: Partial<Employee>): Promise<Employee> {
+  async updateEmployee(
+    id: number,
+    updateData: Partial<Employee>,
+  ): Promise<Employee> {
     const employee = await this.employeeRepository.findOne({ where: { id } });
-  
+
     if (!employee) {
       throw new NotFoundException('Employee not found');
     }
-  
+
     // Met à jour les champs fournis
     Object.assign(employee, updateData);
-  
+
     return this.employeeRepository.save(employee);
   }
 }
