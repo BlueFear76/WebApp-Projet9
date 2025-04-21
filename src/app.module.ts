@@ -23,6 +23,7 @@ import { Alert } from './modules/alerts/entity/alert.entity';
 import { ToolReading } from './modules/readings/entity/tool-reading.entity';
 
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { validationSchema } from './config/validation';
 // Load environment variables from .env file
 
 @Module({
@@ -30,6 +31,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env', // Specify the path to your .env file
+      validationSchema,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
