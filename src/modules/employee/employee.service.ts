@@ -7,10 +7,9 @@ import { Employee } from './entities/employee.entity';
 import * as bcrypt from 'bcryptjs';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { EmployeeRole } from './entities/employee.entity';
-import { randomBytes } from 'crypto'; // 👈 for random password
-if (!(global as any).crypto) {
-  (global as any).crypto = crypto;
-}
+
+import { v4 as uuidv4 } from 'uuid';
+import { nanoid } from 'nanoid';
 import { EmailService } from '../email/email.service';
 
 @Injectable()
@@ -34,8 +33,8 @@ export class EmployeeService {
       throw new NotFoundException('Email already exists');
     }
 
-    // Generate random password
-    const generatedPassword = randomBytes(6).toString('hex'); // 12 characters random
+
+    const generatedPassword = nanoid(12); 
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(generatedPassword, 10);
