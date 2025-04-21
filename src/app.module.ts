@@ -21,25 +21,30 @@ import { Vehicle } from './modules/vehicles/entity/vehicle.entity';
 import { Tool } from './modules/tools/entity/tool.entity';
 import { Alert } from './modules/alerts/entity/alert.entity';
 import { ToolReading } from './modules/readings/entity/tool-reading.entity';
-import { config } from 'dotenv';
-import { ConfigModule } from '@nestjs/config';
-config(); // Load environment variables from .env file
+
+import { ConfigModule, ConfigService } from '@nestjs/config';
+// Load environment variables from .env file
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: '.env', // Specify the path to your .env file
     }),
-    TypeOrmModule.forRoot({
-      type: 'mysql', // Use MySQL
-      host: process.env.DB_HOST, // Change this to your MySQL host
-      port: 50851, // Default MySQL port
-      username: process.env.DB_USERNAME, // Use environment variable for username
-      password: process.env.DB_PASSWORD, // Use environment variable for password
-      database: process.env.DB_NAME, // Change this to your database name
-      entities: [Mission, Employee, Vehicle, Tool, Alert, ToolReading],
-      synchronize: true, // Be cautious with this in production (it syncs the DB structure automatically)
-      autoLoadEntities: true,
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get('DB_HOST'),
+        port: configService.get('DB_PORT', 50851), // default value
+        username: configService.get('DB_USERNAME'),
+        password: configService.get('DB_PASSWORD'),
+        database: configService.get('DB_NAME'),
+        entities: [Mission, Employee, Vehicle, Tool, Alert, ToolReading],
+        synchronize: configService.get('DB_SYNCHRONIZE', false), // safer default
+        autoLoadEntities: true,
+      }),
+      inject: [ConfigService],
     }),
     MissionsModule, // (Add more modules later)
     ReadingsModule,
