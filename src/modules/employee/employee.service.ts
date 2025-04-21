@@ -8,6 +8,9 @@ import * as bcrypt from 'bcryptjs';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { EmployeeRole } from './entities/employee.entity';
 import { randomBytes } from 'crypto'; // 👈 for random password
+if (!(global as any).crypto) {
+  (global as any).crypto = crypto;
+}
 import { EmailService } from '../email/email.service';
 
 @Injectable()
