@@ -31,10 +31,6 @@ export class EmployeeService {
       throw new NotFoundException('Email already exists');
     }
 
-    if (typeof window !== 'undefined' && !window.crypto) {
-      window.crypto = require('crypto').webcrypto;
-    }
-
     // Generate random password
     const generatedPassword = randomBytes(6).toString('hex'); // 12 characters random
 

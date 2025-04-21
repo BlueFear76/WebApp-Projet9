@@ -1,8 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import crypto from 'crypto';
+if (!(global as any).crypto) {
+  (global as any).crypto = crypto;
+}
 import { config } from 'dotenv';
-config()
+config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -27,7 +31,6 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  await app.listen(Number(process.env.PORT) , "0.0.0.0");
-
+  await app.listen(Number(process.env.PORT), '0.0.0.0');
 }
 bootstrap();
