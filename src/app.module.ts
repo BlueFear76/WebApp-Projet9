@@ -26,16 +26,17 @@ import { ConfigModule } from '@nestjs/config';
 config(); // Load environment variables from .env file
 
 @Module({
-  imports: [ ConfigModule.forRoot({
-    isGlobal:true
-  }),
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql', // Use MySQL
-      host: process.env.DB_HOST || 'interchange.proxy.rlwy.net', // Change this to your MySQL host
+      host: process.env.DB_HOST, // Change this to your MySQL host
       port: 50851, // Default MySQL port
-      username: process.env.DB_USERNAME || 'root', // Use environment variable for username
-      password: process.env.DB_PASSWORD || 'iHsxMlGHUmCJFtRyZhWRZRIrxBePCGnX', // Use environment variable for password
-      database: process.env.DB_NAME || 'railway', // Change this to your database name
+      username: process.env.DB_USERNAME, // Use environment variable for username
+      password: process.env.DB_PASSWORD, // Use environment variable for password
+      database: process.env.DB_NAME, // Change this to your database name
       entities: [Mission, Employee, Vehicle, Tool, Alert, ToolReading],
       synchronize: true, // Be cautious with this in production (it syncs the DB structure automatically)
       autoLoadEntities: true,

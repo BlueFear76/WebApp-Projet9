@@ -153,9 +153,19 @@ export class MissionsService {
     });
 
     if (!mission) {
-      throw new NotFoundException(`No mission found for vehicle ID ${vehicleId}`);
+      throw new NotFoundException(
+        `No mission found for vehicle ID ${vehicleId}`,
+      );
     }
 
     return mission;
+  }
+
+  async assignTools(id: number, tags: string[]) {
+    const mission = await this.missionRepository.findOneBy({ id });
+    if (!mission) throw new NotFoundException('Mission not found');
+
+    mission.assignedToolNames = tags;
+    return this.missionRepository.save(mission);
   }
 }

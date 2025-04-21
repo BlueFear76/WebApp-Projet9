@@ -103,7 +103,18 @@ export class MissionsController {
   }
 
   @Get('vehicle/:vehicleId')
-  async getMissionByVehicleId(@Param('vehicleId') vehicleId: string): Promise<Mission> {
+  async getMissionByVehicleId(
+    @Param('vehicleId') vehicleId: string,
+  ): Promise<Mission> {
     return this.missionsService.getMissionByVehicleId(vehicleId);
   }
+
+  @Patch('missions/:id/assign-tools')
+  async assignToolsToMission(
+    @Param('id') id: number,
+    @Body('tags') tags: string[],
+  ) {
+    return this.missionsService.assignTools(+id, tags);
+  }
 }
+// e280699500005014cc146862
