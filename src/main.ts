@@ -3,12 +3,10 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
+// Add this in your AppModule or main.ts
 import { randomUUID } from 'crypto';
-
-// ✅ Patch global.crypto (for randomUUID support in CommonJS/Node)
-if (!(global as any).crypto) {
-  (global as any).crypto = { randomUUID };
-}
+require('@nestjs/typeorm/dist/common/typeorm.utils.js').generateString = () =>
+  randomUUID();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
