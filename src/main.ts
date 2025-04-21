@@ -1,12 +1,10 @@
 // src/main.ts
+import './polyfills';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 // Add this in your AppModule or main.ts
-import { randomUUID } from 'crypto';
-require('@nestjs/typeorm/dist/common/typeorm.utils.js').generateString = () =>
-  randomUUID();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
