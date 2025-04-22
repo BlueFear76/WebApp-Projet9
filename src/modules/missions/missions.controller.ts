@@ -109,7 +109,7 @@ export class MissionsController {
     return this.missionsService.getMissionByVehicleId(vehicleId);
   }
 
-  @Patch('missions/:id/assign-tools')
+  @Patch(':id/assign-tools')
   async assignToolsToMission(
     @Param('id') id: number,
     @Body('tags') tags: string[],
