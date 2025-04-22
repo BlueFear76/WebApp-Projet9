@@ -37,8 +37,8 @@ export class MissionsController {
     status: 201,
     description: 'The mission has been successfully created.',
   })
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin') // Only Admin can create missions
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles('admin') // Only Admin can create missions
   create(@Body() createMissionDto: CreateMissionDto) {
     return this.missionsService.create(createMissionDto);
   }
