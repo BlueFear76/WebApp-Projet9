@@ -45,12 +45,6 @@ export class Mission {
   @OneToMany(() => ToolReading, (reading) => reading.mission)
   readings: ToolReading[];
 
-  @ManyToMany(() => Employee, (employee) => employee.missions, {
-    cascade: true,
-  })
-  @JoinTable()
-  employees: Employee[];
-
   @ManyToOne(() => Vehicle, { nullable: true })
   @JoinColumn()
   vehicle: Vehicle;
@@ -58,4 +52,7 @@ export class Mission {
 
   @Column()
   customerId: number;
+
+  @Column('simple-array', { nullable: true })
+  employeeIds: number[];
 }

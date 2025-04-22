@@ -1,23 +1,26 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNumber, IsOptional } from 'class-validator';
 
-export class CreateMissionDto {
+export class UpdateMissionDto {
   @ApiProperty({
     example: 'Garden Maintenance',
     description: 'Name of the mission',
   })
+  @IsOptional()
   name: string;
 
   @ApiProperty({
     example: 'Clean up garden and mow the lawn',
     description: 'Detailed description of the mission',
   })
+  @IsOptional()
   description: string;
 
   @ApiProperty({
     example: 'Green Park, Paris',
     description: 'Address where the mission will take place',
   })
+  @IsOptional()
   address: string;
 
   @ApiProperty({
@@ -26,6 +29,7 @@ export class CreateMissionDto {
     type: String,
     format: 'date-time',
   })
+  @IsOptional()
   startDate: Date;
 
   @ApiProperty({
@@ -34,6 +38,7 @@ export class CreateMissionDto {
     type: String,
     format: 'date-time',
   })
+  @IsOptional()
   endDate: Date;
 
   @ApiProperty({

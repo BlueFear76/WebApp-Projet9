@@ -28,7 +28,4 @@ export class Employee {
 
   @Column({ type: 'varchar', default: EmployeeRole.USER })
   role: EmployeeRole;
-
-  @ManyToMany(() => Mission, (mission) => mission.employees)
-  missions: Mission[];
 }

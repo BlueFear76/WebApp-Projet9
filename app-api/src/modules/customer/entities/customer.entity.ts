@@ -29,5 +29,5 @@ export class Customer {
 
   @Column()
   addresses: string;
-  
+
 }

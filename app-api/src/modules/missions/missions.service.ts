@@ -1,8 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
 import { Mission } from './entity/mission.entity';
 import { CreateMissionDto } from './dto/create-mission.dto';
+import { UpdateMissionDto } from './dto/update-mission.dto';
 import { GeocodingService } from '../geocoding/geocoding.service';
 import { Employee } from '../employee/entities/employee.entity';
 import { Vehicle } from '../vehicles/entity/vehicle.entity';
@@ -26,16 +27,13 @@ export class MissionsService {
       description,
       startDate,
       endDate,
-      employeeIds = [],
+      customerId,
+      employeeIds,
       vehicleId,
     } = createMissionDto;
 
     const { latitude, longitude } =
       await this.geocodingService.addressToCoordinates(address);
-
-    const employees = await this.employeeRepository.find({
-      where: { id: In(employeeIds) },
-    });
 
     let vehicle: Vehicle | null = null;
     if (vehicleId) {
@@ -55,8 +53,9 @@ export class MissionsService {
       longitude,
       startDate,
       endDate,
-      employees,
       vehicle: vehicle || undefined, // Ensure vehicle is undefined if not found
+      customerId,
+      employeeIds,
     });
 
     return this.missionRepository.save(mission);
@@ -64,14 +63,14 @@ export class MissionsService {
 
   findAll() {
     return this.missionRepository.find({
-      relations: ['employees', 'vehicle'], // 👈 Load the relation
+      relations: ['vehicle'], // 👈 Load the relation
     });
   }
 
   async findOne(id: number) {
     const mission = await this.missionRepository.findOne({
       where: { id },
-      relations: ['employees', 'vehicle'], // 👈 Load the relation
+      relations: ['vehicle'], // 👈 Load the relation
     });
     if (!mission) {
       throw new NotFoundException(`Mission with ID ${id} not found`);
@@ -79,55 +78,82 @@ export class MissionsService {
     return mission;
   }
 
-  async update(id: number, updateMissionDto: CreateMissionDto) {
+  async update(id: number, updateMissionDto: UpdateMissionDto) {
     const mission = await this.findOne(id);
-
-    const { address, name, description, startDate, endDate, vehicleId } =
-      updateMissionDto;
-    const { latitude, longitude } =
-      await this.geocodingService.addressToCoordinates(address);
-
-    let vehicle: Vehicle | null = null;
-    if (vehicleId) {
-      vehicle = await this.vehicleRepository.findOne({
+  
+    const {
+      address,
+      name,
+      description,
+      startDate,
+      endDate,
+      vehicleId,
+      employeeIds, // 🆕 récupère les employés assignés
+    } = updateMissionDto;
+  
+    // Géocodage si l’adresse est fournie
+    if (address) {
+      const { latitude, longitude } =
+        await this.geocodingService.addressToCoordinates(address);
+      mission.address = address;
+      mission.latitude = latitude;
+      mission.longitude = longitude;
+    }
+  
+    if (name !== undefined) mission.name = name;
+    if (description !== undefined) mission.description = description;
+    if (startDate !== undefined) mission.startDate = startDate;
+    if (endDate !== undefined) mission.endDate = endDate;
+  
+    // 🚗 Vérifie que le véhicule existe si un ID est donné
+    if (vehicleId !== undefined) {
+      const vehicle = await this.vehicleRepository.findOne({
         where: { id: vehicleId },
       });
+  
       if (!vehicle) {
         throw new NotFoundException(`Vehicle with ID ${vehicleId} not found`);
       }
+  
+      mission.vehicle = vehicle;
     }
-
-    mission.name = name;
-    mission.description = description;
-    mission.address = address;
-    mission.latitude = latitude;
-    mission.longitude = longitude;
-    mission.startDate = startDate;
-    mission.endDate = endDate;
-    if (vehicle) {
-      mission.vehicle = vehicle; // Only assign if vehicle exists
+  
+    // 👥 Vérifie que tous les employés existent si employeeIds est fourni
+    if (employeeIds !== undefined) {
+      const employees = await this.employeeRepository.findBy({ id: In(employeeIds) });
+  
+      if (employees.length !== employeeIds.length) {
+        throw new NotFoundException('One or more employee IDs are invalid');
+      }
+  
+      mission.employeeIds = employeeIds;
     }
-
+  
     return this.missionRepository.save(mission);
   }
 
   async updateEmployees(id: number, employeeIds: number[]): Promise<Mission> {
-    const mission = await this.missionRepository.findOne({
-      where: { id },
-      relations: ['employees'],
-    });
-
+    const mission = await this.missionRepository.findOne({ where: { id } });
+  
     if (!mission) {
       throw new NotFoundException(`Mission with ID ${id} not found`);
     }
-
+  
+    // Vérifie si les employés existent vraiment
     const employees = await this.employeeRepository.findBy({
       id: In(employeeIds),
     });
-
-    mission.employees = employees;
+  
+    if (employees.length !== employeeIds.length) {
+      throw new NotFoundException(`One or more employees not found`);
+    }
+  
+    // Mets à jour la liste des IDs
+    mission.employeeIds = employeeIds;
+  
     return this.missionRepository.save(mission);
   }
+
 
   async assignVehicle(id: number, vehicleId: number) {
     const mission = await this.findOne(id);

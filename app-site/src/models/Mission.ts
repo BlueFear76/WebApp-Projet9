@@ -19,7 +19,18 @@ export interface MissionDTO{
     address : string;
     startDate : Date;
     endDate : Date;
-    employeeIds?: Employee[];
+    employeeIds?: number[];
     VehicleId?: number;
     customerId: number;
+}
+
+export interface UpdateMissionDTO{
+  name?: string;
+  description?: string;
+  address?: string;
+  startDate?: Date;
+  endDate?: Date;
+  employeeIds?: Employee[];
+  VehicleId?: number;
+  customerId?: number;
 }

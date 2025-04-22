@@ -64,6 +64,7 @@ export default function MissionCreationPage() {
             address,
             startDate,
             endDate,
+            employeeIds: [1,2],
             customerId: Number(selectedCustomerId),
         };
 
