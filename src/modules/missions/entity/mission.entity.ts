@@ -1,4 +1,6 @@
+import { Customer } from './../../customer/entities/customer.entity';
 import { Employee } from 'src/modules/employee/entities/employee.entity';
+import { MismatchAlert } from 'src/modules/mis-match-alert/entity/mismatch-alert.entity';
 import { ToolReading } from 'src/modules/readings/entity/tool-reading.entity';
 import { Vehicle } from 'src/modules/vehicles/entity/vehicle.entity';
 import {
@@ -53,4 +55,13 @@ export class Mission {
   @ManyToOne(() => Vehicle, { nullable: true })
   @JoinColumn()
   vehicle: Vehicle;
+
+  @OneToMany(() => MismatchAlert, (alert) => alert.mission)
+  mismatchAlerts: MismatchAlert[];
+
+  // @Column()
+  // CustomerId: number;
+
+  // @Column()
+  // employeeIds: number[];
 }

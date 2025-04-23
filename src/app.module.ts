@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MissionsModule } from './modules/missions/missions.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ReadingsModule } from './modules/readings/readings.module';
+// import { ReadingsModule } from './modules/readings/readings.module';
 
 import { ToolsModule } from './modules/tools/tools.module';
 import { VehiclesModule } from './modules/vehicles/vehicles.module';
@@ -25,6 +25,8 @@ import { ToolReading } from './modules/readings/entity/tool-reading.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { validationSchema } from './config/validation';
 import { CustomerModule } from './modules/customer/customer.module';
+import { MisMatchAlertModule } from './modules/mis-match-alert/mis-match-alert.module';
+import { AlertsModule } from './modules/alerts/alerts.module';
 // Load environment variables from .env file
 
 @Module({
@@ -50,13 +52,15 @@ import { CustomerModule } from './modules/customer/customer.module';
       inject: [ConfigService],
     }),
     MissionsModule, // (Add more modules later)
-    ReadingsModule,
+    // ReadingsModule,
     ToolsModule,
     VehiclesModule,
     GeocodingModule,
     AuthenticationModule,
     EmployeeModule,
     CustomerModule,
+    MisMatchAlertModule,
+    AlertsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
