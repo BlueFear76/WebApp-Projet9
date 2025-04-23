@@ -45,8 +45,8 @@ import { AlertsModule } from './modules/alerts/alerts.module';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [Mission, Employee, Vehicle, Tool, Alert, ToolReading],
-        synchronize: configService.get('DB_SYNCHRONIZE', false), // safer default
+        entities: [Mission, Employee, Vehicle, Tool, ToolReading],
+        synchronize: configService.get('DB_SYNCHRONIZE', true), // safer default
         autoLoadEntities: true,
       }),
       inject: [ConfigService],

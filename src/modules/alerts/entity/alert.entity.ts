@@ -11,4 +11,7 @@ export class Alert {
 
   @ManyToOne(() => Mission, { nullable: true })
   mission: Mission; // Reference to the mission associated with the alert
+
+  // @Column({ type: 'varchar', length: 255, nullable: true })
+  // vehicleId: string | null; // Optional vehicleId field
 }

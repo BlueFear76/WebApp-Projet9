@@ -14,24 +14,17 @@ export class AlertsService {
 
   // Method to create an alert
   async create(toolTagIds: string[], missionId: number) {
-    // Join the toolTagIds if it's an array
-    const toolTagIdsStr = toolTagIds.join(', ');
-
-    // Create the alert with only the toolTagId and missionId
     const alert = this.alertRepository.create({
-      toolTagId: toolTagIds, // Join the toolTagId array if needed
-      mission: { id: missionId } as any, // Associate mission by ID
+      toolTagId: toolTagIds, // Tool tags will be an array of strings
+      mission: { id: missionId }, // Mission is referenced by its ID
     });
 
-    // Save the alert
     const savedAlert = await this.alertRepository.save(alert);
 
-    // Now, create the message separately (e.g., for SMS or logging purposes)
-    const message = `Tool(s) with ID(s) ${toolTagIdsStr} are missing after mission with ID ${missionId}`;
-
-    // Send SMS or handle the message as needed (for example, call an SMS service)
+    // 🔥 Send SMS after saving the alert
     const recipientPhone = process.env.ALERT_PHONE_NUMBER;
     if (recipientPhone) {
+      const message = `Tool(s) with ID(s) ${toolTagIds.join(', ')} are missing after mission with ID ${missionId}`;
       await this.smsService.sendSms(recipientPhone, message);
     }
 

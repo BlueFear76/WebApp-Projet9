@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { AlertsService } from './alerts.service';
 import { ApiTags } from '@nestjs/swagger';
+import { CreateAlertDto } from './dto/create-alert.dto';
 
 @ApiTags('alerts')
 @Controller('alerts')
@@ -26,8 +27,9 @@ export class AlertsController {
   // }
 
   @Post()
-  async createAlert(@Body() body: { toolTagIds: string[]; missionId: number }) {
-    return this.alertsService.create(body.toolTagIds, body.missionId);
+  async create(@Body() createAlertDto: CreateAlertDto) {
+    const { toolTagIds, missionId } = createAlertDto;
+    return this.alertsService.create(toolTagIds, missionId);
   }
 
   @Get()
