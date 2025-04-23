@@ -24,6 +24,7 @@ import { ToolReading } from './modules/readings/entity/tool-reading.entity';
 
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { validationSchema } from './config/validation';
+import { CustomerModule } from './modules/customer/customer.module';
 // Load environment variables from .env file
 
 @Module({
@@ -55,6 +56,7 @@ import { validationSchema } from './config/validation';
     GeocodingModule,
     AuthenticationModule,
     EmployeeModule,
+    CustomerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
