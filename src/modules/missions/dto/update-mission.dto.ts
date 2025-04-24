@@ -1,23 +1,26 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNumber, IsOptional } from 'class-validator';
 
-export class CreateMissionDto {
+export class UpdateMissionDto {
   @ApiProperty({
     example: 'Garden Maintenance',
     description: 'Name of the mission',
   })
+  @IsOptional()
   name: string;
 
   @ApiProperty({
     example: 'Clean up garden and mow the lawn',
     description: 'Detailed description of the mission',
   })
+  @IsOptional()
   description: string;
 
   @ApiProperty({
     example: 'Green Park, Paris',
     description: 'Address where the mission will take place',
   })
+  @IsOptional()
   address: string;
 
   @ApiProperty({
@@ -26,6 +29,7 @@ export class CreateMissionDto {
     type: String,
     format: 'date-time',
   })
+  @IsOptional()
   startDate: Date;
 
   @ApiProperty({
@@ -34,7 +38,16 @@ export class CreateMissionDto {
     type: String,
     format: 'date-time',
   })
+  @IsOptional()
   endDate: Date;
+
+  @ApiProperty({
+    example: 1,
+    description: 'ID of the customer associated with the mission',
+  })
+  @IsNumber()
+  @IsOptional()
+  customerId: number;
 
   @ApiProperty({
     example: [1, 2],
@@ -45,19 +58,7 @@ export class CreateMissionDto {
   @IsNumber({}, { each: true })
   employeeIds: number[]; // Array of employee IDs to be assigned to the mission
 
-  @ApiProperty({
-    example: 1,
-    description: 'Vehicle ID to assign the mission to',
-  })
   @IsOptional()
   @IsNumber()
   vehicleId?: number; // Optional field for mission assignment
-
-  @ApiProperty({
-    example: 1,
-    // description: 'Array of RFID tag IDs for the tools assigned to the mission',
-  })
-  @IsNumber()
-  @IsOptional()
-  customerId: number; // Optional field for customer ID
 }

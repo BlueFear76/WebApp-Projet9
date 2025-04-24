@@ -83,7 +83,7 @@ export class MissionsController {
   }
 
   @Patch(':id/employees')
-  @Roles('admin')
+  // @Roles('admin')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @HttpCode(200)
   @ApiOperation({ summary: 'Update employees assigned to a mission' })

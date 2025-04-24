@@ -27,6 +27,7 @@ import { validationSchema } from './config/validation';
 import { CustomerModule } from './modules/customer/customer.module';
 import { MisMatchAlertModule } from './modules/mis-match-alert/mis-match-alert.module';
 import { AlertsModule } from './modules/alerts/alerts.module';
+import { Customer } from './modules/customer/entities/customer.entity';
 // Load environment variables from .env file
 
 @Module({
@@ -45,7 +46,15 @@ import { AlertsModule } from './modules/alerts/alerts.module';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [Mission, Employee, Vehicle, Tool, ToolReading],
+        entities: [
+          Mission,
+          Employee,
+          Vehicle,
+          Tool,
+          ToolReading,
+          Customer,
+          Alert,
+        ],
         synchronize: configService.get('DB_SYNCHRONIZE', true), // safer default
         autoLoadEntities: true,
       }),
