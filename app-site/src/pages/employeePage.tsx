@@ -89,7 +89,7 @@ const EmployeePage: React.FC = () => {
     };
 
     // Enregistrer l'outil via une API (exemple avec fetch)
-    const response = await fetch('http://localhost:3001/employees/create', {
+    const response = await fetch('https://tool-tracking-production.up.railway.app/employees/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -130,7 +130,7 @@ const EmployeePage: React.FC = () => {
       const updatedEmployee = { ...editingEmployee, firstname, lastname, email, role };
 
       // Mettre à jour l'outil via l'API (exemple avec fetch)
-      const response = await fetch(`http://localhost:3001/employees/${editingEmployee.id}`, {
+      const response = await fetch(`https://tool-tracking-production.up.railway.app/employees/${editingEmployee.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -149,7 +149,7 @@ const EmployeePage: React.FC = () => {
   };
 
   const onDeleteEmployee = async (employeeId: number) => {
-    const response = await fetch(`http://localhost:3001/employees/${employeeId}`, {
+    const response = await fetch(`https://tool-tracking-production.up.railway.app/employees/${employeeId}`, {
       method: 'DELETE',
     });
 

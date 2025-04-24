@@ -21,7 +21,7 @@ export default function MissionCreationPage() {
     useEffect(() => {
         const fetchCustomers = async () => {
             try {
-                const res = await fetch('http://localhost:3001/customers');
+                const res = await fetch('https://tool-tracking-production.up.railway.app/customers');
                 const data = await res.json();
                 setCustomers(data);
             } catch (error) {

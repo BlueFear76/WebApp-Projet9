@@ -37,3 +37,42 @@
     border-radius: 20px;
     border: 4px solid rgb(20, 79, 35);
 }
+
+.alertList {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .alertItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    margin-bottom: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+  }
+  
+  .alertContent {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .missionTag {
+    font-weight: bold;
+    color: #c21717;
+  }
+  
+  .deleteButton {
+    padding: 6px 12px;
+    background-color: #ff595e;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .deleteButton:hover {
+    background-color: #d32f2f;
+  }

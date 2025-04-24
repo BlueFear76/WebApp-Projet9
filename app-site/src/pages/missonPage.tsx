@@ -56,7 +56,7 @@ export default function MissionPage() {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const res = await fetch('http://localhost:3001/customers');
+        const res = await fetch('https://tool-tracking-production.up.railway.app/customers');
         const data = await res.json();
         setCustomers(data);
       } catch (error) {
@@ -144,7 +144,7 @@ export default function MissionPage() {
         address: editingMission.address,
         startDate: editingMission.startDate,
         endDate: editingMission.endDate,
-        customerId: editingMission.customerId,
+        customerId: Number(selectedCustomerId),
       };
 
         // Mettre à jour l'outil via l'API (exemple avec fetch)

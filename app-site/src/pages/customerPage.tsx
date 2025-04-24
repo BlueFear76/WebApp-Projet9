@@ -15,7 +15,7 @@ const CustomerPage: React.FC = () => {
   
   const fetchCustomers = async () => {
     try {
-      const response = await fetch('http://localhost:3001/customers', {
+      const response = await fetch('https://tool-tracking-production.up.railway.app/customers', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ const CustomerPage: React.FC = () => {
     formData.append('file', selectedFile);
 
     try {
-      const response = await fetch('http://localhost:3001/customers', {
+      const response = await fetch('https://tool-tracking-production.up.railway.app/customers', {
         method: 'POST',
         body: formData,
       });

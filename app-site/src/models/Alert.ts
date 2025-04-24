@@ -1,6 +1,9 @@
+import { Mission } from "./Mission";
+
+
 export interface Alert {
-    id : number;
-    time : string;
-    mission : number;
-    tool : number;
-}
+    id: number;
+    toolTagId: string[];
+    message: string;
+    mission: Mission;
+  }
