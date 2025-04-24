@@ -59,9 +59,9 @@ export class Mission {
   @OneToMany(() => MismatchAlert, (alert) => alert.mission)
   mismatchAlerts: MismatchAlert[];
 
-  // @Column()
-  // CustomerId: number;
+  @Column()
+  customerId: number;
 
-  // @Column()
-  // employeeIds: number[];
+  @Column('simple-array')
+  employeeIds: number[];
 }
