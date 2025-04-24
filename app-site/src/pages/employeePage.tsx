@@ -41,7 +41,7 @@ const EmployeePage: React.FC = () => {
 
   const fetchEmployees = async () => {
     try {
-      const response = await fetch('http://localhost:3001/employees', {
+      const response = await fetch('https://tool-tracking-production.up.railway.app/employees', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

@@ -68,7 +68,7 @@ export default function MissionCreationPage() {
             customerId: Number(selectedCustomerId),
         };
 
-        fetch('http://localhost:3001/missions', {
+        fetch('https://tool-tracking-production.up.railway.app/missions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

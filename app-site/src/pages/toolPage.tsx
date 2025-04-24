@@ -29,7 +29,7 @@ export default function ToolPage() {
   const forceUpdate = useCallback(() => updateState({}), []);
 
   const fetchTools = async () => {
-    const response = await fetch('http://localhost:3001/tools');
+    const response = await fetch('https://tool-tracking-production.up.railway.app/tools');
     const data = await response.json();
     setTools(data);
   };
@@ -98,7 +98,7 @@ export default function ToolPage() {
     };
   
     // Enregistrer l'outil via une API (exemple avec fetch)
-    const response = await fetch('http://localhost:3001/tools', {
+    const response = await fetch('https://tool-tracking-production.up.railway.app/tools', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -126,7 +126,7 @@ export default function ToolPage() {
       const updatedTool = { ...editingTool, name, status, rfidTagId : tag_id };
       
       // Mettre à jour l'outil via l'API (exemple avec fetch)
-      const response = await fetch(`http://localhost:3001/tools/${editingTool.id}`, {
+      const response = await fetch(`https://tool-tracking-production.up.railway.app/tools/${editingTool.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -150,7 +150,7 @@ export default function ToolPage() {
   };
 
   const onDeleteTool = async (toolId: number) => {
-    const response = await fetch(`http://localhost:3001/tools/${toolId}`, {
+    const response = await fetch(`https://tool-tracking-production.up.railway.app/tools/${toolId}`, {
       method: 'DELETE',
     });
 

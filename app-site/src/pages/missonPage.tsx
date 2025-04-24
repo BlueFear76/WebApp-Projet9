@@ -40,7 +40,7 @@ export default function MissionPage() {
 
   const fetchMissions = async () => {
     try {
-      const response = await fetch('http://localhost:3001/missions');
+      const response = await fetch('https://tool-tracking-production.up.railway.app/missions');
       const data = await response.json();
       console.log("Missions reçues :", data);
       setMissions(data);
@@ -81,7 +81,7 @@ export default function MissionPage() {
   };
 
   const onDeleteMission = async (missionId: number) => {
-    const response = await fetch(`http://localhost:3001/missions/${missionId}`, {
+    const response = await fetch(`https://tool-tracking-production.up.railway.app/missions/${missionId}`, {
       method: 'DELETE',
     });
 
@@ -104,13 +104,12 @@ export default function MissionPage() {
 
   const handleShowTools = async (toolIds: string[]) => {
     try {
-      const response = await fetch('http://localhost:3001/tools');
+      const response = await fetch('https://tool-tracking-production.up.railway.app/tools');
       const allTools = await response.json(); 
       console.log(allTools);
-      const toolIdsAsNumbers = toolIds.map(id => Number(id));
   
       // Filtrer les outils par ID
-      const selected = allTools.filter((tool: Tool) => toolIdsAsNumbers.includes(tool.id));
+      const selected = allTools.filter((tool: Tool) => toolIds.includes(tool.rfidTagId || 'no RFID TAG'));
       console.log(selected);
       setSelectedTools(selected);
     } catch (error) {
@@ -149,7 +148,7 @@ export default function MissionPage() {
       };
 
         // Mettre à jour l'outil via l'API (exemple avec fetch)
-        const response = await fetch(`http://localhost:3001/missions/${editingMission.id}`, {
+        const response = await fetch(`https://tool-tracking-production.up.railway.app/missions/${editingMission.id}`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
