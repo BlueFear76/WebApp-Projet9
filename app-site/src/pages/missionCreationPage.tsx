@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+// Importing required types
 import { Mission, MissionDTO } from '../models/Mission';
 import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import '../styles/missionCreationPageStyle.css';
+// Date picker components
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -12,12 +14,17 @@ import { Customer } from '../models/Customer';
 export default function MissionCreationPage() {
     const [newMission, setNewMission] = useState<Mission>();
     const navigate = useNavigate();
+
+    // States for start and end dates
     const [startDate, setStartDate] = useState<Date | null>(new Date());
     const [endDate, setEndDate] = useState<Date | null>(new Date());
+    // States for customer selection and customer list
     const [customers, setCustomers] = useState<Customer[]>([]);
     const [selectedCustomerId, setSelectedCustomerId] = useState<number | string>('');
+    // State to hold address based on selected customer
     const [address, setAddress] = useState<string>(''); // <- nouvelle ligne
 
+    // Fetch the list of customers from the backend when component mounts
     useEffect(() => {
         const fetchCustomers = async () => {
             try {
@@ -32,42 +39,47 @@ export default function MissionCreationPage() {
         fetchCustomers();
     }, []);
 
-    // Met à jour l'adresse automatiquement quand un client est sélectionné
+    /// Automatically update address when a customer is selected
     useEffect(() => {
         const selectedCustomer = customers.find(c => c.id === Number(selectedCustomerId));
         if (selectedCustomer?.addresses) {
-            setAddress(selectedCustomer.addresses);
+            setAddress(selectedCustomer.addresses);// Auto-fill address
         } else {
             setAddress('');
         }
     }, [selectedCustomerId, customers]);
 
+    // Function to handle form submission and mission creation
     const onAddMission = (e: React.FormEvent) => {
         e.preventDefault();
         const form = e.target as HTMLFormElement;
         const name = (form.elements.namedItem('name') as HTMLInputElement).value;
         const description = (form.elements.namedItem('description') as HTMLInputElement).value;
 
+        // Validate dates
         if (!startDate || !endDate) {
             alert('Veuillez sélectionner une date de début et de fin.');
             return;
         }
 
+        // Validate customer selection
         if (!selectedCustomerId) {
             alert('Veuillez sélectionner un client.');
             return;
         }
 
+        // Create the mission object to send
         const newMissionObject: MissionDTO = {
             name,
             description,
             address,
             startDate,
             endDate,
-            employeeIds: [1,2],
+            employeeIds: [1,2], // Replace with actual logic for employee assignment
             customerId: Number(selectedCustomerId),
         };
 
+        // Send mission to the backend
         fetch('https://tool-tracking-production.up.railway.app/missions', {
             method: 'POST',
             headers: {
@@ -83,7 +95,7 @@ export default function MissionCreationPage() {
             })
             .then(data => {
                 console.log('Mission créée :', data);
-                navigate('/missions');
+                navigate('/missions'); // Navigate to missions page after creation
             })
             .catch(error => {
                 console.error('Erreur :', error);

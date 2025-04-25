@@ -5,6 +5,7 @@ import '../styles/missionPageStyle.css';
 import moment from 'moment';  // Importer moment.js
 import 'moment/locale/fr';  // Importer la locale française de moment
 import CustomCalendar from '../components/calendar/customCalendar';
+//to have a responsive table
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 import { Tool } from '../models/Tool';
@@ -12,6 +13,7 @@ import { Customer } from '../models/Customer';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { fr } from 'date-fns/locale';
 
+// Icons
 import ListIcon from '../images/list.svg'
 import CalendarIcon from '../images/mission.svg'
 import EditIcon from '../images/edit.svg'
@@ -23,21 +25,27 @@ export default function MissionPage() {
   const [missionView, setMissionView] = useState('list'); // 'list' pour liste, 'calendar' pour calendrier
   const [selectedTools, setSelectedTools] = useState<Tool[] | null>(null);
   const [missions, setMissions] = useState<Mission[]>([]);
-  const storedUser = localStorage.getItem('userLogged');
-  const userLogged = storedUser ? JSON.parse(storedUser) : null;
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [editingMission, setEditingMission] = useState<Mission | null>(null);
   const [openModal, setOpenModal] = useState(false);
+  // Form state
   const [selectedCustomerId, setSelectedCustomerId] = useState<number | string>('');
-  const navigate = useNavigate();
   const [address, setAddress] = useState<string>('');
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(new Date());
 
+  const navigate = useNavigate();
+
+  // Get logged-in user from local storage
+  const storedUser = localStorage.getItem('userLogged');
+  const userLogged = storedUser ? JSON.parse(storedUser) : null;
+
+  // Utility to force re-render (not used often)
   const [, updateState] = useState({});
   const forceUpdate = useCallback(() => updateState({}), []);
 
 
+  // Load all missions from backend
   const fetchMissions = async () => {
     try {
       const response = await fetch('https://tool-tracking-production.up.railway.app/missions');
@@ -53,6 +61,7 @@ export default function MissionPage() {
     fetchMissions();
   }, []);
 
+  // Load customers
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
@@ -67,6 +76,7 @@ export default function MissionPage() {
     fetchCustomers();
   }, []);
 
+  // Convert missions to FullCalendar-compatible events
   const convertMissionsToEvents = (missions: Mission[]) => {
     return missions.map(mission => ({
       id: mission.id.toString(),  // ID unique de l'événement
@@ -80,6 +90,7 @@ export default function MissionPage() {
     }));
   };
 
+  // Delete a mission
   const onDeleteMission = async (missionId: number) => {
     const response = await fetch(`https://tool-tracking-production.up.railway.app/missions/${missionId}`, {
       method: 'DELETE',
@@ -102,13 +113,14 @@ export default function MissionPage() {
     }
   };
 
+  // Show list of tools assigned to a mission
   const handleShowTools = async (toolIds: string[]) => {
     try {
       const response = await fetch('https://tool-tracking-production.up.railway.app/tools');
       const allTools = await response.json(); 
       console.log(allTools);
   
-      // Filtrer les outils par ID
+      // Filter tools by ID
       const selected = allTools.filter((tool: Tool) => toolIds.includes(tool.rfidTagId || 'no RFID TAG'));
       console.log(selected);
       setSelectedTools(selected);
@@ -121,6 +133,7 @@ export default function MissionPage() {
     setSelectedTools(null);
   };
 
+  // Handle updating a mission (form submit)
   const onUpdateMission = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
@@ -147,7 +160,7 @@ export default function MissionPage() {
         customerId: Number(selectedCustomerId),
       };
 
-        // Mettre à jour l'outil via l'API (exemple avec fetch)
+        // Update the tool via the API (example with fetch)
         const response = await fetch(`https://tool-tracking-production.up.railway.app/missions/${editingMission.id}`, {
           method: 'PATCH',
           headers: {
@@ -158,17 +171,18 @@ export default function MissionPage() {
         console.log(updatedMissionObject);
   
         if (response.ok) {
-          // Après la mise à jour, re-fetch les outils pour avoir la liste la plus récente
-          fetchMissions(); // Récupérer les outils mis à jour depuis le backend
+          // After updating, re-fetch the tools to get the most recent list
+          fetchMissions(); // Retrieve updated tools from the backend
           setEditingMission(null);
-          setOpenModal(false); // Fermer le modal après la mise à jour
+          setOpenModal(false); // Close the modal after updating
         }
       }
     };
 
+  // Open edit modal and fill in form fields
   const onEditMission = (mission : Mission) => {
       setEditingMission(mission);
-      setOpenModal(true); // Ouvrir le modal pour modifier l'outil
+      setOpenModal(true); // Open the modal to edit the tool
     };
 
 
@@ -248,6 +262,8 @@ export default function MissionPage() {
         Nouvelle Mission
       </button>)
       }
+      
+      {/* Toggle view (list/calendar) */}
       <div className="view-toggle">
         <button className="button" onClick={() => setMissionView('list')}>
           <img src={ListIcon} alt="Vue Liste" className="icon-button" />
@@ -260,6 +276,7 @@ export default function MissionPage() {
         {renderMissions()}
       </div>
 
+      {/* Modal for viewing tools */}
       {selectedTools && (
         <div className="modal-overlay">
           <div className="modal">
@@ -288,7 +305,7 @@ export default function MissionPage() {
       )}
 
 
-      {/* Modal pour la modification de la mission */}
+      {/* Modal for editing a mission */}
       <Modal
         open={openModal}
         onClose={() => setOpenModal(false)}
