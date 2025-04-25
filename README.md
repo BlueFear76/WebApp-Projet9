@@ -81,14 +81,14 @@ To enable SMS notifications, you must create a [Twilio](https://www.twilio.com/)
 > 💡 **Note:**
 > Make sure the Twilio phone number is **SMS-enabled**!
 
-# 🔐 JWT Config
+### 🔐 JWT Config
 
 JWT credentials used for authentication and authorization:
 
 6. JWT_SECRET=
 7. JWT_EXPIRES_IN=
 
-# Email Config
+### Email Config
 
 8. EMAIL_USER=
 9. EMAIL_PASS=
@@ -96,15 +96,15 @@ JWT credentials used for authentication and authorization:
 - **EMAIL_USER**: Your email address used to send messages
 - **EMAIL_PASS**: Your email password or app-specific password
 
-FRONTEND_RESET_PASSWORD_URL=https://yourfrontend.com/reset-password
+10. FRONTEND_RESET_PASSWORD_URL=https://yourfrontend.com/reset-password
 
-# 🛢️Database Config
+### 🛢️Database Config
 
-10. DB_HOST=
-11. DB_PORT=
-12. DB_NAME=
-13. DB_USERNAME=
-14. DB_PASSWORD=
+11. DB_HOST=
+12. DB_PORT=
+13. DB_NAME=
+14. DB_USERNAME=
+15. DB_PASSWORD=
 
 - **DB_HOST**: Hostname of your MySQL server
 - **DB_PORT**: Port number for the MySQL server (default: 3306)
