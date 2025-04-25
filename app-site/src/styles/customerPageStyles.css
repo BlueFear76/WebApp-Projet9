@@ -1,3 +1,4 @@
+/* General styles for the customer page */
 .customerPage {
     color: rgb(20, 79, 35);
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
@@ -22,7 +23,7 @@
   }
   
   
-  /* TABLEAU DES EMPLOYÉS */
+  /* TABLE STYLES */
   .customers-table {
     margin-top: 20px;
     width: 100%;
@@ -75,7 +76,7 @@
     background-color: rgb(120, 180, 110);
   }
   
-  /* CENTRAGE BOUTONS OU FILTRES */
+  /* Used for centering elements like buttons or filters */
   .view-toggle {
     display: flex;
     gap: 20px;
@@ -83,7 +84,8 @@
     margin: 30px;
   }
   
-
+/* FORM STYLES */
+  /* Center form container */
   .form-block{
     display: flex;
     justify-content: center;
@@ -168,6 +170,7 @@
     margin: 0px;
   }
 
+  /* File import container */
   .import-section {
     width: 50vw;
     padding: 10px;

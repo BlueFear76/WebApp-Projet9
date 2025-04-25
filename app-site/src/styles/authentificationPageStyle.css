@@ -1,22 +1,22 @@
 .loginPage{
     color: rgb(20, 79, 35);
-    font-family :'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    margin: 80px;
+    font-family :'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;/* Font family: a clean, sans-serif font stack */
+    margin: 80px;/* Adds 80px of space around the element */
     text-align: center;
 }
 
 .fields{
-    display: flex;
+    display: flex;/* Enables Flexbox layout */
     flex-direction: column;
     align-items: center;
-    gap: 30px;
+    gap: 30px;/* Adds 30px of space between each form field */
     margin: 100px;
 }
 
 .button{
     background-color: rgb(148, 207, 130);
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    padding: 10px;
-    border-radius: 10px;
-    border: none;
+    padding: 10px;/* Adds internal space around the button text */
+    border-radius: 10px; /* Rounds the corners of the button */
+    border: none;/* Removes the default border */
 }
