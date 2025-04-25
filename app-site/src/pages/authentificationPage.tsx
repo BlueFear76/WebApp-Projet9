@@ -3,6 +3,7 @@ import { TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import '../styles/authentificationPageStyle.css';
 import { jwtDecode } from 'jwt-decode';
+import API_BASE_URL from '../config';
 
 interface AuthProps {
   onLogin: (userData: User) => void;
@@ -21,7 +22,7 @@ const Authentification: React.FC<AuthProps> = ({ onLogin }) => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    const response = await fetch('https://tool-tracking-production.up.railway.app/auth/login', {
+    const response = await fetch(`${API_BASE_URL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

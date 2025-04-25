@@ -8,6 +8,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { fr } from 'date-fns/locale';
 import { Customer } from '../models/Customer';
+import API_BASE_URL from '../config';
 
 export default function MissionCreationPage() {
     const [newMission, setNewMission] = useState<Mission>();
@@ -21,7 +22,7 @@ export default function MissionCreationPage() {
     useEffect(() => {
         const fetchCustomers = async () => {
             try {
-                const res = await fetch('https://tool-tracking-production.up.railway.app/customers');
+                const res = await fetch(`${API_BASE_URL}/customers`);
                 const data = await res.json();
                 setCustomers(data);
             } catch (error) {
@@ -68,7 +69,7 @@ export default function MissionCreationPage() {
             customerId: Number(selectedCustomerId),
         };
 
-        fetch('https://tool-tracking-production.up.railway.app/missions', {
+        fetch(`${API_BASE_URL}/missions`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

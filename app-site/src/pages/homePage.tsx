@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import '../styles/homePageStyle.css'
 import { Alert } from '../models/Alert';
+import API_BASE_URL from '../config';
 
 
 
@@ -23,7 +24,7 @@ const HomePage: React.FC<HomePageProps> = ({ user }) => {
   useEffect(() => {
     const fetchAlerts = async () => {
       try {
-        const response = await fetch('https://tool-tracking-production.up.railway.app/alerts');
+        const response = await fetch(`${API_BASE_URL}/alerts`);
         if (!response.ok) {
           throw new Error('Erreur lors de la récupération des alertes');
         }
@@ -39,7 +40,7 @@ const HomePage: React.FC<HomePageProps> = ({ user }) => {
 
   const deleteAlert = async (id: number) => {
     try {
-      const response = await fetch(`https://tool-tracking-production.up.railway.app/alerts/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/alerts/${id}`, {
         method: 'DELETE',
       });
       if (!response.ok) {

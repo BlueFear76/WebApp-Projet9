@@ -7,3 +7,4 @@ export interface Employee {
     login: string;
     password?: string;
 }
+

@@ -5,6 +5,7 @@ import '../styles/customerPageStyles.css';
 import { Customer } from '../models/Customer';
 
 import editIcon from '../images/edit.svg';
+import API_BASE_URL from '../config';
 
 const CustomerPage: React.FC = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -15,7 +16,7 @@ const CustomerPage: React.FC = () => {
   
   const fetchCustomers = async () => {
     try {
-      const response = await fetch('https://tool-tracking-production.up.railway.app/customers', {
+      const response = await fetch(`${API_BASE_URL}/customers`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +59,7 @@ const CustomerPage: React.FC = () => {
     formData.append('file', selectedFile);
 
     try {
-      const response = await fetch('https://tool-tracking-production.up.railway.app/customers', {
+      const response = await fetch(`${API_BASE_URL}/customers`, {
         method: 'POST',
         body: formData,
       });

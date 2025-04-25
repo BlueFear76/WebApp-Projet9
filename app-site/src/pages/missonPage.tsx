@@ -17,6 +17,7 @@ import CalendarIcon from '../images/mission.svg'
 import EditIcon from '../images/edit.svg'
 import { Autocomplete, Box, FormControl, InputLabel, MenuItem, Modal, Select, TextField } from '@mui/material';
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import API_BASE_URL from '../config';
 
 
 export default function MissionPage() {
@@ -40,7 +41,7 @@ export default function MissionPage() {
 
   const fetchMissions = async () => {
     try {
-      const response = await fetch('https://tool-tracking-production.up.railway.app/missions');
+      const response = await fetch(`${API_BASE_URL}/missions`);
       const data = await response.json();
       console.log("Missions reçues :", data);
       setMissions(data);
@@ -56,7 +57,7 @@ export default function MissionPage() {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const res = await fetch('https://tool-tracking-production.up.railway.app/customers');
+        const res = await fetch(`${API_BASE_URL}/customers`);
         const data = await res.json();
         setCustomers(data);
       } catch (error) {
@@ -81,7 +82,7 @@ export default function MissionPage() {
   };
 
   const onDeleteMission = async (missionId: number) => {
-    const response = await fetch(`https://tool-tracking-production.up.railway.app/missions/${missionId}`, {
+    const response = await fetch(`${API_BASE_URL}/missions/${missionId}`, {
       method: 'DELETE',
     });
 
@@ -104,7 +105,7 @@ export default function MissionPage() {
 
   const handleShowTools = async (toolIds: string[]) => {
     try {
-      const response = await fetch('https://tool-tracking-production.up.railway.app/tools');
+      const response = await fetch(`${API_BASE_URL}/tools`);
       const allTools = await response.json(); 
       console.log(allTools);
   
@@ -148,7 +149,7 @@ export default function MissionPage() {
       };
 
         // Mettre à jour l'outil via l'API (exemple avec fetch)
-        const response = await fetch(`https://tool-tracking-production.up.railway.app/missions/${editingMission.id}`, {
+        const response = await fetch(`${API_BASE_URL}/missions/${editingMission.id}`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',

@@ -4,6 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 import '../styles/employeePageStyles.css'
 
 import editIcon from '../images/edit.svg'
+import API_BASE_URL from '../config';
 
 interface Employee {
   id: number;
@@ -41,7 +42,7 @@ const EmployeePage: React.FC = () => {
 
   const fetchEmployees = async () => {
     try {
-      const response = await fetch('https://tool-tracking-production.up.railway.app/employees', {
+      const response = await fetch(`${API_BASE_URL}/employees`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -89,7 +90,7 @@ const EmployeePage: React.FC = () => {
     };
 
     // Enregistrer l'outil via une API (exemple avec fetch)
-    const response = await fetch('https://tool-tracking-production.up.railway.app/employees/create', {
+    const response = await fetch(`${API_BASE_URL}/employees/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -130,7 +131,7 @@ const EmployeePage: React.FC = () => {
       const updatedEmployee = { ...editingEmployee, firstname, lastname, email, role };
 
       // Mettre à jour l'outil via l'API (exemple avec fetch)
-      const response = await fetch(`https://tool-tracking-production.up.railway.app/employees/${editingEmployee.id}`, {
+      const response = await fetch(`${API_BASE_URL}/employees/${editingEmployee.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -149,7 +150,7 @@ const EmployeePage: React.FC = () => {
   };
 
   const onDeleteEmployee = async (employeeId: number) => {
-    const response = await fetch(`https://tool-tracking-production.up.railway.app/employees/${employeeId}`, {
+    const response = await fetch(`${API_BASE_URL}/employees/${employeeId}`, {
       method: 'DELETE',
     });
 

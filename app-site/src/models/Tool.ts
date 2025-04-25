@@ -7,3 +7,5 @@ export interface Tool {
     lastKnownLocation?: string;
     rfidTagId?: string;
   }
+
+  
