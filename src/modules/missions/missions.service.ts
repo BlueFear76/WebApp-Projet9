@@ -65,12 +65,14 @@ export class MissionsService {
     return this.missionRepository.save(mission);
   }
 
+  // 🚀 Get all missions with vehicle relation
   findAll() {
     return this.missionRepository.find({
       relations: ['vehicle'], // 👈 Load the relation
     });
   }
 
+  // 🚀 Get a mission by ID with vehicle relation
   async findOne(id: number) {
     const mission = await this.missionRepository.findOne({
       where: { id },
@@ -114,6 +116,7 @@ export class MissionsService {
   //   return this.missionRepository.save(mission);
   // }
 
+  // 🆕 Update mission with optional vehicle and employee IDs
   async update(id: number, updateMissionDto: UpdateMissionDto) {
     const mission = await this.findOne(id);
 
@@ -170,6 +173,7 @@ export class MissionsService {
     return this.missionRepository.save(mission);
   }
 
+  // 🆕 Update employees assigned to a mission
   async updateEmployees(id: number, employeeIds: number[]): Promise<Mission> {
     const mission = await this.missionRepository.findOne({
       where: { id },
@@ -188,6 +192,7 @@ export class MissionsService {
     return this.missionRepository.save(mission);
   }
 
+  // 🆕 Assign a vehicle to a mission
   async assignVehicle(id: number, vehicleId: number) {
     const mission = await this.findOne(id);
     const vehicle = await this.vehicleRepository.findOneBy({ id: vehicleId });
@@ -200,6 +205,7 @@ export class MissionsService {
     return this.missionRepository.save(mission);
   }
 
+  // 🗑️ Delete a mission by ID
   async remove(id: number) {
     const mission = await this.findOne(id);
     return this.missionRepository.remove(mission);
@@ -220,6 +226,7 @@ export class MissionsService {
     return mission;
   }
 
+  // 🛠️ Assign tools to a mission
   async assignTools(id: number, tags: string[]) {
     const mission = await this.missionRepository.findOneBy({ id });
     if (!mission) throw new NotFoundException('Mission not found');

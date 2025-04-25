@@ -20,12 +20,12 @@ import { Employee } from './modules/employee/entities/employee.entity';
 import { Vehicle } from './modules/vehicles/entity/vehicle.entity';
 import { Tool } from './modules/tools/entity/tool.entity';
 import { Alert } from './modules/alerts/entity/alert.entity';
-import { ToolReading } from './modules/readings/entity/tool-reading.entity';
+// import { ToolReading } from './modules/readings/entity/tool-reading.entity';
 
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { validationSchema } from './config/validation';
 import { CustomerModule } from './modules/customer/customer.module';
-import { MisMatchAlertModule } from './modules/mis-match-alert/mis-match-alert.module';
+// import { MisMatchAlertModule } from './modules/mis-match-alert/mis-match-alert.module';
 import { AlertsModule } from './modules/alerts/alerts.module';
 import { Customer } from './modules/customer/entities/customer.entity';
 // Load environment variables from .env file
@@ -51,7 +51,7 @@ import { Customer } from './modules/customer/entities/customer.entity';
           Employee,
           Vehicle,
           Tool,
-          ToolReading,
+          // ToolReading,
           Customer,
           Alert,
         ],
@@ -68,7 +68,7 @@ import { Customer } from './modules/customer/entities/customer.entity';
     AuthenticationModule,
     EmployeeModule,
     CustomerModule,
-    MisMatchAlertModule,
+    // MisMatchAlertModule,
     AlertsModule,
   ],
   controllers: [AppController],

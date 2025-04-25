@@ -6,11 +6,11 @@ import { Mission } from './entity/mission.entity';
 import { GeocodingModule } from '../geocoding/geocoding.module';
 import { Employee } from '../employee/entities/employee.entity';
 import { Vehicle } from '../vehicles/entity/vehicle.entity';
-import { MismatchAlert } from '../mis-match-alert/entity/mismatch-alert.entity';
+// import { MismatchAlert } from '../mis-match-alert/entity/mismatch-alert.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Mission, Employee, Vehicle, MismatchAlert]),
+    TypeOrmModule.forFeature([Mission, Employee, Vehicle]),
     GeocodingModule,
   ],
   controllers: [MissionsController],

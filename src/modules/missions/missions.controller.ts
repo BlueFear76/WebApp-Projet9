@@ -94,6 +94,7 @@ export class MissionsController {
     return this.missionsService.updateEmployees(+id, updateDto.employeeIds);
   }
 
+  //Delete a mission by ID
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a mission by ID' })
   @ApiParam({ name: 'id', required: true })
@@ -102,6 +103,7 @@ export class MissionsController {
     return this.missionsService.remove(+id);
   }
 
+  // Get all missions assigned to a vehicle by vehicle ID
   @Get('vehicle/:vehicleId')
   async getMissionByVehicleId(
     @Param('vehicleId') vehicleId: string,
@@ -109,6 +111,7 @@ export class MissionsController {
     return this.missionsService.getMissionByVehicleId(vehicleId);
   }
 
+  // Assign tools to a mission
   @Patch(':id/assign-tools')
   async assignToolsToMission(
     @Param('id') id: number,
@@ -117,4 +120,3 @@ export class MissionsController {
     return this.missionsService.assignTools(+id, tags);
   }
 }
-// e280699500005014cc146862
