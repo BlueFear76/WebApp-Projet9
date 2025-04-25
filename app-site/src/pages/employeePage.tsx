@@ -6,6 +6,7 @@ import '../styles/employeePageStyles.css'
 import editIcon from '../images/edit.svg'
 import API_BASE_URL from '../config';
 
+// Interfaces for type checking
 interface Employee {
   id: number;
   firstname: string;
@@ -28,18 +29,21 @@ interface UpdatedEmployeeDTO {
 }
 
 const EmployeePage: React.FC = () => {
+  // States to manage component behavior
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
+  // Logged-in user from localStorage
   const storedUser = localStorage.getItem('userLogged');
   const userLogged = storedUser ? JSON.parse(storedUser) : null;
 
   const [, updateState] = useState({});
   const forceUpdate = useCallback(() => updateState({}), []);
 
+  // Fetch employee data from the API
   const fetchEmployees = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/employees`, {
@@ -64,20 +68,22 @@ const EmployeePage: React.FC = () => {
     }
   };
 
+  // Load employees on initial render
   useEffect(() => {
     fetchEmployees();
   }, []);
 
+  // Add a new employee (POST request)
   const onSaveEmployee = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
-    // Utilisation de 'FormData' pour récupérer les données du formulaire
+    // Using 'FormData' to retrieve form data
     const formData = new FormData(form);
     const firstname = formData.get('firstname') as string;
     const lastname = formData.get('lastname') as string;
     const email = formData.get('email') as string;
 
-    // Vérification que toutes les valeurs sont bien récupérées
+    // Check that all values ​​are correctly retrieved
     if (!firstname || !lastname || !email) {
       alert('Veuillez remplir tous les champs.');
       return;
@@ -89,8 +95,8 @@ const EmployeePage: React.FC = () => {
       email
     };
 
-    // Enregistrer l'outil via une API (exemple avec fetch)
-    const response = await fetch(`${API_BASE_URL}/employees/create`, {
+    // Register the tool via an API (example with fetch)
+    const response = await fetch('https://tool-tracking-production.up.railway.app/employees/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -102,16 +108,18 @@ const EmployeePage: React.FC = () => {
       const addedEmployee = await response.json();
       setEmployees([...employees, addedEmployee]);
       form.reset();
-      setShowForm(false); // Ferme le formulaire après l'ajout
+      setShowForm(false); // Close the form
       forceUpdate();
     }
   };
 
+  // Open the modal with selected employee data
   const onEditEmployee = (employee: Employee) => {
     setEditingEmployee(employee);
-    setOpenModal(true); // Ouvrir le modal pour modifier l'outil
+    setOpenModal(true); // Open the modal to edit the tool
   };
 
+  // Update an existing employee (PATCH request)
   const onUpdateEmployee = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
@@ -130,8 +138,9 @@ const EmployeePage: React.FC = () => {
     if (editingEmployee) {
       const updatedEmployee = { ...editingEmployee, firstname, lastname, email, role };
 
-      // Mettre à jour l'outil via l'API (exemple avec fetch)
-      const response = await fetch(`${API_BASE_URL}/employees/${editingEmployee.id}`, {
+      
+      // Update the tool via the API (example with fetch)
+      const response = await fetch(`https://tool-tracking-production.up.railway.app/employees/${editingEmployee.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -141,14 +150,15 @@ const EmployeePage: React.FC = () => {
       console.log(employeeUpdate);
 
       if (response.ok) {
-        // Après la mise à jour, re-fetch les outils pour avoir la liste la plus récente
-        fetchEmployees(); // Récupérer les outils mis à jour depuis le backend
+        // After updating, re-fetch the tools to get the most recent list
+        fetchEmployees(); //Retrieve updated tools from the backend
         setEditingEmployee(null);
-        setOpenModal(false); // Fermer le modal après la mise à jour
+        setOpenModal(false); // Close the modal after updating
       }
     }
   };
 
+  // Delete an employee (DELETE request)
   const onDeleteEmployee = async (employeeId: number) => {
     const response = await fetch(`${API_BASE_URL}/employees/${employeeId}`, {
       method: 'DELETE',
@@ -160,6 +170,7 @@ const EmployeePage: React.FC = () => {
     }
   };
 
+  // Handle confirmation before deletion
   const handleDeleteClick = () => {
     if (editingEmployee) {
       const confirmDelete = window.confirm(`Voulez-vous vraiment supprimer ${editingEmployee.firstname} ${editingEmployee.lastname} ?`);
@@ -171,6 +182,7 @@ const EmployeePage: React.FC = () => {
     }
   };
 
+  // Translate internal role value to readable label
   const roleTranslation = (role: string): string => {
     switch (role) {
       case 'admin':
@@ -195,7 +207,7 @@ const EmployeePage: React.FC = () => {
       {showForm && (
         <div className="form-block">
           <form className="employee-form" onSubmit={onSaveEmployee}>
-            <h2>Ajouter un Outil</h2>
+            <h2>Ajouter un Employé</h2>
             {/* Champ "Type" avec suggestions */}
             <TextField
               label="Prénom"

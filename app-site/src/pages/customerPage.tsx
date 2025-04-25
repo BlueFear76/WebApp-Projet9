@@ -8,12 +8,18 @@ import editIcon from '../images/edit.svg';
 import API_BASE_URL from '../config';
 
 const CustomerPage: React.FC = () => {
+  // State to store the list of customers
   const [customers, setCustomers] = useState<Customer[]>([]);
+  // Loading state to track data fetching
   const [loading, setLoading] = useState(true);
+  // Error state to handle any fetch errors
   const [error, setError] = useState<string | null>(null);
+  // Toggle for displaying the file import section
   const [showImport, setShowImport] = useState(false);
+  // State to store the selected CSV file
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   
+  // Function to fetch customer data from the API
   const fetchCustomers = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/customers`, {
@@ -28,16 +34,17 @@ const CustomerPage: React.FC = () => {
       }
 
       const data = await response.json();
-      setCustomers(data);
+      setCustomers(data);// Save fetched customers into state
       console.log('Liste des clients récupérés:', data);
     } catch (err: any) {
       setError('Erreur lors du chargement des clients.');
       console.error(err);
     } finally {
-      setLoading(false);
+      setLoading(false);// Stop loading state in all cases
     }
   };
 
+  // useEffect to fetch customers when the component first mounts
   useEffect(() => {
     fetchCustomers();
   }, []);
@@ -46,12 +53,14 @@ const CustomerPage: React.FC = () => {
     setShowImport(!showImport);
   };
 
+  // Updates the selected file when user picks a CSV file
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setSelectedFile(e.target.files[0]);
     }
   };
 
+  // Uploads the selected CSV file to the backend
   const handleUpload = async () => {
     if (!selectedFile) return;
 
@@ -69,7 +78,7 @@ const CustomerPage: React.FC = () => {
       }
 
       alert('Importation réussie !');
-      fetchCustomers(); // pour rafraîchir la liste après import
+      fetchCustomers(); // Refresh the list after upload
       setShowImport(false);
       setSelectedFile(null);
     } catch (err) {

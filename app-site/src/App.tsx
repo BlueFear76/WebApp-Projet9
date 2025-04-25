@@ -17,6 +17,7 @@ import logoutIcon from './images/logout.svg';
 import MissionCreationPage from './pages/missionCreationPage';
 import customerIcon from './images/customer.svg'
 
+// Defining the User interface to specify the structure of the user object
 interface User {
   firstname: string;
   lastname: string;
@@ -25,22 +26,25 @@ interface User {
 }
 
 const App: React.FC = () => {
+  // Setting up the state for authentication, user details, and dialog box for logout
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
   const storedUser = localStorage.getItem('userLogged');
   const userLogged = storedUser ? JSON.parse(storedUser) : null;
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
+  // Function to handle login, sets the user data and authentication state
   const handleLogin = (userData: User) => {
     setUser(userData);
     setIsAuthenticated(true);
   };
 
+  // Function to handle logout, clears the authentication state and user data
   const handleLogout = () => {
     setLogoutDialogOpen(false);
     setIsAuthenticated(false);
     setUser(null);
-    localStorage.removeItem('userLogged'); // si tu veux clean le localStorage
+    localStorage.removeItem('userLogged'); // if you want to clean the localStorage
   };
   
   const openLogoutDialog = () => {
@@ -52,10 +56,13 @@ const App: React.FC = () => {
   };
 
   return (
+    // Setting up the router for navigation between pages
     <Router>
       {isAuthenticated && (
+        // Display the sidebar when the user is authenticated
         <div className="sidebar">
           <ul>
+            {/* Navigation links in the sidebar */}
             <li>
               <Link to="/home">
                 <img src={homeIcon} alt="Home" className="nav-icon" />
@@ -74,6 +81,7 @@ const App: React.FC = () => {
                 <span>Outils</span>
               </Link>
             </li>
+            {/* Display 'Clients' page only for users with the 'admin' or 'superAdmin' role */}
             {(userLogged?.role === "admin" || userLogged?.role === "superAdmin") && (
               <li>
                 <Link to="/customers">
@@ -82,6 +90,7 @@ const App: React.FC = () => {
                 </Link>
               </li>
             )}
+            {/* Display 'Employees' page only for users with the 'superAdmin' role */}
             {userLogged?.role === "superAdmin" && (
               <li>
                 <Link to="/employees">
@@ -90,6 +99,7 @@ const App: React.FC = () => {
                 </Link>
               </li>
             )}
+            {/* Logout button */}
             <li className="disconnect">
               <Link to="#" onClick={openLogoutDialog}>
                 <img src={logoutIcon} alt="Déconnexion" className="nav-icon" />
@@ -100,8 +110,10 @@ const App: React.FC = () => {
         </div>
       )}
 
+      {/* Main content area for routing */}
       <div className="main-content">
         <Routes>
+          {/* Routes for different pages, redirect to login page if not authenticated */}
           <Route path="/" element={<Authentification onLogin={handleLogin} />} />
           <Route path="/home" element={isAuthenticated ? <Home user={userLogged}/> : <Navigate to="/" />} />
           <Route path="/tools" element={isAuthenticated ? <ToolPage /> : <Navigate to="/" />} />
@@ -111,6 +123,8 @@ const App: React.FC = () => {
           <Route path="/create-mission" element={isAuthenticated ? <MissionCreationPage /> : <Navigate to="/" />} />
         </Routes>
       </div>
+      
+      {/* Logout confirmation dialog */}
       <Dialog className='logOutDialogBox' open={logoutDialogOpen} onClose={closeLogoutDialog}>
         <DialogTitle>Déconnexion</DialogTitle>
         <DialogContent>

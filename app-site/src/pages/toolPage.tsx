@@ -25,23 +25,26 @@ export default function ToolPage() {
 
   console.log(userLogged);
 
-  // Utilisation du hook useCallback pour forcer le rafraîchissement de la page
+  // Use useCallback to force a re-render when necessary
   const [, updateState] = useState({});
   const forceUpdate = useCallback(() => updateState({}), []);
 
+  // Fetch tools from the API
   const fetchTools = async () => {
     const response = await fetch(`${API_BASE_URL}/tools`);
     const data = await response.json();
     setTools(data);
   };
 
+  // Fetch tools when the component mounts
   useEffect(() => {
-    fetchTools(); // Charge les outils au premier rendu
+    fetchTools(); // Load tools on first render
   }, []);
 
-  // Dédupliquer les types d'outils pour éviter les doublons
+  // Deduplicate tool types to avoid duplicates
   const existingToolTypes = Array.from(new Set(tools.map(tool => tool.name)));
 
+  // Sort tools based on the selected field and direction
   const sortedTools = [...tools].sort((a, b) => {
     if (!sortField) return 0;
 
@@ -59,6 +62,7 @@ export default function ToolPage() {
       : String(fieldB).localeCompare(String(fieldA));
   });
 
+  // Handle the sorting of tools when clicking on table headers
   const handleSort = (field: keyof Tool) => {
     if (sortField === field) {
       setSortDirection(prev => (prev === 'asc' ? 'desc' : 'asc'));
@@ -68,6 +72,7 @@ export default function ToolPage() {
     }
   };
 
+  // Render sorting icons next to each column header
   const renderSortIcons = (field: keyof Tool) => {
     const isActive = sortField === field;
     return (
@@ -78,16 +83,17 @@ export default function ToolPage() {
     );
   };
 
+  // Handle saving a new tool
   const onSaveTool = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
-    // Utilisation de 'FormData' pour récupérer les données du formulaire
+    // Using 'FormData' to retrieve form data
     const formData = new FormData(form);
     const name = formData.get('name') as string;
     const status = formData.get('status') as string;
     const rfidTagId = formData.get('rfidTagId') as string;
 
-    // Vérification que toutes les valeurs sont bien récupérées
+    // Check that all values ​​are correctly retrieved
     if (!name || !rfidTagId) {
       alert('Veuillez remplir tous les champs.');
       return;
@@ -98,8 +104,8 @@ export default function ToolPage() {
       rfidTagId
     };
   
-    // Enregistrer l'outil via une API (exemple avec fetch)
-    const response = await fetch(`${API_BASE_URL}/tools`, {
+    // Register the tool via an API (example with fetch)
+    const response = await fetch('https://tool-tracking-production.up.railway.app/tools', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -111,11 +117,12 @@ export default function ToolPage() {
       const addedTool = await response.json();
       setTools([...tools, addedTool]);
       form.reset();
-      setShowForm(false); // Ferme le formulaire après l'ajout
+      setShowForm(false); // Close the form after saving the tool
       forceUpdate();
     }
   };
 
+  // Handle updating an existing tool
   const onUpdateTool = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
@@ -126,8 +133,8 @@ export default function ToolPage() {
     if (editingTool) {
       const updatedTool = { ...editingTool, name, status, rfidTagId : tag_id };
       
-      // Mettre à jour l'outil via l'API (exemple avec fetch)
-      const response = await fetch(`${API_BASE_URL}/tools/${editingTool.id}`, {
+      // Update the tool through the API
+      const response = await fetch(`https://tool-tracking-production.up.railway.app/tools/${editingTool.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -137,19 +144,21 @@ export default function ToolPage() {
       console.log(updatedTool);
 
       if (response.ok) {
-        // Après la mise à jour, re-fetch les outils pour avoir la liste la plus récente
-        fetchTools(); // Récupérer les outils mis à jour depuis le backend
+        // After updating, re-fetch the tools to get the most recent list
+        fetchTools(); // Retrieve updated tools from the backend
         setEditingTool(null);
-        setOpenModal(false); // Fermer le modal après la mise à jour
+        setOpenModal(false); // Close the modal after updating
       }
     }
   };
 
+  // Handle editing a tool
   const onEditTool = (tool: Tool) => {
     setEditingTool(tool);
-    setOpenModal(true); // Ouvrir le modal pour modifier l'outil
+    setOpenModal(true); // Open the modal to edit the tool
   };
 
+  // Handle deleting a too
   const onDeleteTool = async (toolId: number) => {
     const response = await fetch(`${API_BASE_URL}/tools/${toolId}`, {
       method: 'DELETE',
@@ -161,13 +170,14 @@ export default function ToolPage() {
     }
   };
 
+  // Handle delete confirmation in the modal
   const handleDeleteClick = () => {
     if (editingTool) {
       const confirmDelete = window.confirm(`Voulez-vous vraiment supprimer cet outil ?`);
         if (confirmDelete) {
         onDeleteTool(editingTool.id);
-        setOpenModal(false); // Fermer le modal après suppression
-        setEditingTool(null); // Réinitialiser l'état
+        setOpenModal(false); // Close the modal after deletion
+        setEditingTool(null); /// Reset the editing tool state
       }
     }
   };

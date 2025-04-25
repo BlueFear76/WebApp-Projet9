@@ -5,7 +5,7 @@ import { Alert } from '../models/Alert';
 import API_BASE_URL from '../config';
 
 
-
+// Interface for user props
 interface User {
   firstName: string;
   lastName: string;
@@ -14,13 +14,16 @@ interface User {
   sub: string;
 }
 
+// Props expected by this component
 interface HomePageProps {
   user: User | null;
 }
 
 const HomePage: React.FC<HomePageProps> = ({ user }) => {
+  // State to store alerts fetched from backend
   const [alerts, setAlerts] = useState<Alert[]>([]);
 
+  // Fetch alerts from backend API when component mounts
   useEffect(() => {
     const fetchAlerts = async () => {
       try {
@@ -29,15 +32,16 @@ const HomePage: React.FC<HomePageProps> = ({ user }) => {
           throw new Error('Erreur lors de la récupération des alertes');
         }
         const data = await response.json();
-        setAlerts(data);
+        setAlerts(data);// Store fetched alerts in state
       } catch (error) {
         console.error('Erreur:', error);
       }
     };
 
-    fetchAlerts();
+    fetchAlerts();// Call function on mount
   }, []);
 
+  // Function to delete an alert by its ID
   const deleteAlert = async (id: number) => {
     try {
       const response = await fetch(`${API_BASE_URL}/alerts/${id}`, {
@@ -46,7 +50,7 @@ const HomePage: React.FC<HomePageProps> = ({ user }) => {
       if (!response.ok) {
         throw new Error("Erreur lors de la suppression de l'alerte");
       }
-      // Retirer l'alerte du state après suppression
+      // Remove the deleted alert from local state
       setAlerts(prev => prev.filter(alert => alert.id !== id));
     } catch (error) {
       console.error('Erreur :', error);
