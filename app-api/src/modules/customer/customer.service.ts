@@ -33,7 +33,7 @@ export class CustomerService {
 
   async importFromCsv(csvData: string): Promise<Customer[]> {
     const customers: Customer[] = [];
-  
+
     await new Promise<void>((resolve, reject) => {
       Readable.from([csvData])
         .pipe(csv({ separator: ';' }))
@@ -51,7 +51,7 @@ export class CustomerService {
         .on('end', () => resolve())
         .on('error', (err) => reject(err));
     });
-  
+
     await this.deleteAll();
     return this.customerRepository.save(customers);
   }

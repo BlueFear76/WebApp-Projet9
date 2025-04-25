@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MissionsModule } from './modules/missions/missions.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ReadingsModule } from './modules/readings/readings.module';
+// import { ReadingsModule } from './modules/readings/readings.module';
 
 import { ToolsModule } from './modules/tools/tools.module';
 import { VehiclesModule } from './modules/vehicles/vehicles.module';
@@ -20,41 +20,56 @@ import { Employee } from './modules/employee/entities/employee.entity';
 import { Vehicle } from './modules/vehicles/entity/vehicle.entity';
 import { Tool } from './modules/tools/entity/tool.entity';
 import { Alert } from './modules/alerts/entity/alert.entity';
-import { ToolReading } from './modules/readings/entity/tool-reading.entity';
-import { config } from 'dotenv';
+// import { ToolReading } from './modules/readings/entity/tool-reading.entity';
+
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { validationSchema } from './config/validation';
 import { CustomerModule } from './modules/customer/customer.module';
+// import { MisMatchAlertModule } from './modules/mis-match-alert/mis-match-alert.module';
+import { AlertsModule } from './modules/alerts/alerts.module';
 import { Customer } from './modules/customer/entities/customer.entity';
-config(); // Load environment variables from .env file
+// Load environment variables from .env file
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql', // Use MySQL
-      host: process.env.DB_HOST || 'sql7.freesqldatabase.com', // Change this to your MySQL host
-      port: 3306, // Default MySQL port
-      username: process.env.DB_USERNAME || 'sql7773844', // Use environment variable for username
-      password: process.env.DB_PASSWORD || 'U9i1Yt4kHE', // Use environment variable for password
-      database: process.env.DB_USERNAME || 'sql7773844', // Change this to your database name
-      entities: [
-        Mission,
-        Employee,
-        Vehicle,
-        Tool,
-        Alert,
-        ToolReading,
-        Customer,
-      ],
-      synchronize: true, // Be cautious with this in production (it syncs the DB structure automatically)
-      logging: true,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env', // Specify the path to your .env file
+      validationSchema,
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get('DB_HOST'),
+        port: configService.get('DB_PORT', 50851), // default value
+        username: configService.get('DB_USERNAME'),
+        password: configService.get('DB_PASSWORD'),
+        database: configService.get('DB_NAME'),
+        entities: [
+          Mission,
+          Employee,
+          Vehicle,
+          Tool,
+          // ToolReading,
+          Customer,
+          Alert,
+        ],
+        synchronize: configService.get('DB_SYNCHRONIZE', true), // safer default
+        autoLoadEntities: true,
+      }),
+      inject: [ConfigService],
     }),
     MissionsModule, // (Add more modules later)
-    ReadingsModule,
+    // ReadingsModule,
     ToolsModule,
     VehiclesModule,
     GeocodingModule,
     AuthenticationModule,
     EmployeeModule,
     CustomerModule,
+    // MisMatchAlertModule,
+    AlertsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

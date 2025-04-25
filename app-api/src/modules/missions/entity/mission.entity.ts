@@ -1,7 +1,8 @@
+import { Customer } from './../../customer/entities/customer.entity';
 import { Employee } from 'src/modules/employee/entities/employee.entity';
-import { ToolReading } from 'src/modules/readings/entity/tool-reading.entity';
+// import { MismatchAlert } from 'src/modules/mis-match-alert/entity/mismatch-alert.entity';
+
 import { Vehicle } from 'src/modules/vehicles/entity/vehicle.entity';
-import { Customer } from 'src/modules/customer/entities/customer.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -42,17 +43,22 @@ export class Mission {
   @Column('simple-array', { nullable: true })
   assignedToolNames: string[];
 
-  @OneToMany(() => ToolReading, (reading) => reading.mission)
-  readings: ToolReading[];
+  @ManyToMany(() => Employee, (employee) => employee.missions, {
+    cascade: true,
+  })
+  @JoinTable()
+  employees: Employee[];
 
   @ManyToOne(() => Vehicle, { nullable: true })
   @JoinColumn()
   vehicle: Vehicle;
 
+  // @OneToMany(() => MismatchAlert, (alert) => alert.mission)
+  // mismatchAlerts: MismatchAlert[];
 
   @Column()
   customerId: number;
 
-  @Column('simple-array', { nullable: true })
+  @Column('simple-array')
   employeeIds: number[];
 }

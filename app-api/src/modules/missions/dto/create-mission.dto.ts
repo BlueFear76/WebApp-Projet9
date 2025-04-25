@@ -37,14 +37,6 @@ export class CreateMissionDto {
   endDate: Date;
 
   @ApiProperty({
-    example: 1,
-    description: 'ID of the customer associated with the mission',
-  })
-  @IsNumber()
-  @IsOptional()
-  customerId: number;
-
-  @ApiProperty({
     example: [1, 2],
     description: 'Assigned employees to a mission',
   })
@@ -53,7 +45,19 @@ export class CreateMissionDto {
   @IsNumber({}, { each: true })
   employeeIds: number[]; // Array of employee IDs to be assigned to the mission
 
+  @ApiProperty({
+    example: 1,
+    description: 'Vehicle ID to assign the mission to',
+  })
   @IsOptional()
   @IsNumber()
   vehicleId?: number; // Optional field for mission assignment
+
+  @ApiProperty({
+    example: 1,
+    // description: 'Array of RFID tag IDs for the tools assigned to the mission',
+  })
+  @IsNumber()
+  @IsOptional()
+  customerId: number; // Optional field for customer ID
 }

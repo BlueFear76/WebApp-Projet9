@@ -1,13 +1,16 @@
-// src/employee/employee.service.ts
-
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Employee } from './entities/employee.entity';
-import * as bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcryptjs'; // or bcryptjs
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { EmployeeRole } from './entities/employee.entity';
-import { randomBytes } from 'crypto'; // 👈 for random password
+import { nanoid } from 'nanoid'; // Static import
+import { v4 as uuidv4 } from 'uuid'; // Static import
 import { EmailService } from '../email/email.service';
 
 @Injectable()
@@ -23,18 +26,14 @@ export class EmployeeService {
   ): Promise<Employee> {
     const { firstname, lastname, email } = createEmployeeDto;
 
-    // Check if email already exists
     const existingEmployee = await this.employeeRepository.findOne({
       where: { email },
     });
     if (existingEmployee) {
-      throw new NotFoundException('Email already exists');
+      throw new ConflictException('Email already exists');
     }
 
-    // Generate random password
-    const generatedPassword = randomBytes(6).toString('hex'); // 12 characters random
-
-    // Hash the password
+    const generatedPassword = uuidv4().replace(/-/g, '').slice(0, 12); // Generate a random password
     const hashedPassword = await bcrypt.hash(generatedPassword, 10);
 
     const employee = this.employeeRepository.create({
@@ -42,20 +41,16 @@ export class EmployeeService {
       lastname,
       email,
       password: hashedPassword,
-      role: EmployeeRole.USER, // Default role is user
+      role: EmployeeRole.USER,
     });
 
     await this.employeeRepository.save(employee);
 
-    // Build full name
-    const fullName = `${firstname} ${lastname}`;
-
-    // Send email after saving
     await this.emailService.sendEmployeeCredentials(
-      fullName,
+      `${firstname} ${lastname}`,
       email,
       generatedPassword,
-    ); // 👈 Pass fullName, email, password
+    );
 
     return employee;
   }
@@ -82,16 +77,19 @@ export class EmployeeService {
     }
   }
 
-  async updateEmployee(id: number, updateData: Partial<Employee>): Promise<Employee> {
+  async updateEmployee(
+    id: number,
+    updateData: Partial<Employee>,
+  ): Promise<Employee> {
     const employee = await this.employeeRepository.findOne({ where: { id } });
-  
+
     if (!employee) {
       throw new NotFoundException('Employee not found');
     }
-  
+
     // Met à jour les champs fournis
     Object.assign(employee, updateData);
-  
+
     return this.employeeRepository.save(employee);
   }
 }

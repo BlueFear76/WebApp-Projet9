@@ -6,24 +6,12 @@ export class Alert {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  toolTagId: string; // Missing tool's RFID tag ID
-
-  @Column()
-  vehicleId: string; // Truck that reported it
-
-  @Column()
-  message: string; // Like "Tool missing after mission"
-
-  @Column('datetime')
-  detectedAt: Date; // When the alert was created
-
-  @Column({ nullable: true })
-  toolName: string; // Real tool name
-
-  @Column({ nullable: true })
-  locationAddress: string; //
+  @Column('simple-json')
+  toolTagId: string[];
 
   @ManyToOne(() => Mission, { nullable: true })
-  mission: Mission;
+  mission: Mission; // Reference to the mission associated with the alert
+
+  @Column({ nullable: true })
+  message?: string;
 }

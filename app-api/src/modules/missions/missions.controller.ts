@@ -20,6 +20,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Employee } from '../employee/entities/employee.entity';
 import { UpdateMissionEmployeesDto } from './dto/update-mission-employees.dto';
 import { AssignVehicleDto } from '../vehicles/dto/assign-vehicle.dto';
+import { Mission } from './entity/mission.entity';
 
 @ApiTags('missions')
 @Controller('missions')
@@ -36,8 +37,8 @@ export class MissionsController {
     status: 201,
     description: 'The mission has been successfully created.',
   })
-  //@UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin') // Only Admin can create missions
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles('admin') // Only Admin can create missions
   create(@Body() createMissionDto: CreateMissionDto) {
     return this.missionsService.create(createMissionDto);
   }
@@ -82,7 +83,7 @@ export class MissionsController {
   }
 
   @Patch(':id/employees')
-  @Roles('admin')
+  // @Roles('admin')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @HttpCode(200)
   @ApiOperation({ summary: 'Update employees assigned to a mission' })
@@ -93,11 +94,29 @@ export class MissionsController {
     return this.missionsService.updateEmployees(+id, updateDto.employeeIds);
   }
 
+  //Delete a mission by ID
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a mission by ID' })
   @ApiParam({ name: 'id', required: true })
   @ApiResponse({ status: 200, description: 'Mission deleted.' })
   remove(@Param('id') id: string) {
     return this.missionsService.remove(+id);
+  }
+
+  // Get all missions assigned to a vehicle by vehicle ID
+  @Get('vehicle/:vehicleId')
+  async getMissionByVehicleId(
+    @Param('vehicleId') vehicleId: string,
+  ): Promise<Mission> {
+    return this.missionsService.getMissionByVehicleId(vehicleId);
+  }
+
+  // Assign tools to a mission
+  @Patch(':id/assign-tools')
+  async assignToolsToMission(
+    @Param('id') id: number,
+    @Body('tags') tags: string[],
+  ) {
+    return this.missionsService.assignTools(+id, tags);
   }
 }
