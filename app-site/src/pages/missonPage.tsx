@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react
 import '../styles/missionPageStyle.css';
 import moment from 'moment';  // Importer moment.js
 import 'moment/locale/fr';  // Importer la locale française de moment
-import CustomCalendar from '../components/customCalendar';
+import CustomCalendar from '../components/calendar/customCalendar';
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 import { Tool } from '../models/Tool';
