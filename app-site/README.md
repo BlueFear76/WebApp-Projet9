@@ -1,22 +1,45 @@
-# 🧭 Frontend – Tool Tracking App
+# TOOL TRACKING - FRONTEND
 
-Ce dossier (app-site) correspond à la partie **frontend** de l'application de gestion d'outils et de missions pour l'entreprise.  
+Interface web développée avec **React** et **Next.js**
+Elle permet de consulter, modifier et importer des données liées aux outils, employés et clients, en lien avec une API backend NestJS.
 
-# Permissions Utilisateurs
+---
 
-Trois Roles differents imposant des restriction sur l'acces / modification des informations :
+## 🚀 Fonctionnalités principales
 
-> Super Administrateur (superAdmin) : Role disposant de toutes les permissions de modifiaction, creation, acces et supression. Aucune restriction. Seul ce role à accès a la page Employés et Clients
+- 🔧 Page **Outils** : liste des outils, dernière localisation (à venir)
+- 👩‍💼 Page **Employés** : affichage, édition, suppression, import CSV
+- 🏢 Page **Clients** : affichage et import CSV
+- 🌐 Connexion dynamique avec le backend via API REST
+- 📦 Architecture modulaire avec composants réutilisables
 
-> Administrateur (admin) : Role qui sera normalement attribué aux Chefs d'équipes il permet d'acceder au pages Outils, Missions, Client, Home avec quelques restrictions sur la creation, supression et modification
+---
 
-> Utilisateur (user) : Role qui sera normalement attribué aux Employés, permet d'acces au pages Outils, Missions, Client, Home seulement en mode lecture, pas de modifiaction creation et suppression possible
+## 🗂️ Structure du projet
 
-Voici des details supplementaires sur les actions possibles sur chaques page en fonction des permissions
+- `pages/` : pages principales du site
+- `components/` : composants visuels réutilisables
+- `models/` : interfaces TypeScript (`Tool`, `Employee`, `Customer`, etc.)
+- `providers/` : logique de gestion des données
+- `utils/config.ts` : contient l’URL de base du backend
 
-# Page de connexion
+---
 
-Pour se connecter
+## ⚙️ Configuration du frontend
 
+Dans le fichier `utils/config.ts` :
 
+# 1. Cloner le dépôt
+- git clone https://github.com/BlueFear76/WebApp-Projet9.git
+
+# 2. Installer les dépendances
+- cd m1-site
+- npm install
+
+# 3. Lancer le serveur de développement
+- npm run dev
+
+## ⚙️ Configuration de l’URL de l’API
+
+Dans le fichier `utils/config.ts`
 
