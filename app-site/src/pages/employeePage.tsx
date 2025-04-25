@@ -194,7 +194,7 @@ const EmployeePage: React.FC = () => {
       {showForm && (
         <div className="form-block">
           <form className="employee-form" onSubmit={onSaveEmployee}>
-            <h2>Ajouter un Outil</h2>
+            <h2>Ajouter un Employé</h2>
             {/* Champ "Type" avec suggestions */}
             <TextField
               label="Prénom"
